@@ -5,7 +5,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lti.entity.Admin;
 import com.lti.entity.BookTicket;
 import com.lti.entity.Bus;
+import com.lti.entity.ChangePasswordDto;
 import com.lti.entity.Passenger;
 import com.lti.entity.Ticket;
 import com.lti.entity.TicketDetailsDto;
@@ -59,16 +63,33 @@ public class BusReservationController {
 	@GetMapping(value="/login")
 	public User login(@RequestBody loginDto dto) {
 		
-		User userPersisted =  busService.loginUser(dto.getUserId(), dto.getPassword());
+		User userPersisted = null;
+		
+		
+		userPersisted= busService.loginUser(dto.getid(), dto.getPassword());
+		
 		return userPersisted;
 	}
+	
+	//http://localhost:9090/loginadmin
+	@GetMapping(value="/loginadmin")
+	public Admin loginAdmin(@RequestBody loginDto dto) {
+			
+			Admin adminPersisted = null;
+			
+			adminPersisted= busService.loginAdmin(dto.getid(), dto.getPassword());
+			
+			return adminPersisted;
+		}
 
+	
 	//http://localhost:9090/changepassword
 	@PutMapping(value="/changepassword")
-	public String changePassword(int userId, String password) {
+	public String changePassword(@RequestBody ChangePasswordDto dto) {
 		
-		String result = busService.changePassword(userId, password);
+		String result = busService.changePassword(dto.getUserId(),dto.getPassword());
 		 return result; 
+		 
 	}
 
 	//http://localhost:9090/bookaticket
@@ -76,7 +97,8 @@ public class BusReservationController {
 	public Ticket bookATicket(@RequestBody BookTicket bookTicket , @RequestParam("userId") int userId, @RequestParam("busId") int busId) {
 		
 		Ticket ticket = bookTicket.getTicket();
-		
+		 
+	
 		Bus bus = busService.chooseBus(busId);
 		ticket.setBus(bus);
 		
@@ -96,8 +118,9 @@ public class BusReservationController {
 	}
 
 	
-	
-	public List<Bus> searchBus(String source, String destination) {
+	//http://localhost:9090/searchbus
+	@GetMapping(value="/searchbus")
+	public List<Bus> searchBus(@RequestParam("source") String source,@RequestParam("destination") String destination) {
 		// TODO Auto-generated method stub
 		return busService.searchBus(source, destination);
 	}
@@ -109,62 +132,82 @@ public class BusReservationController {
 	 */
 
 	
-	public List<Passenger> fetchBookedSeats(LocalDate travelDate, int busId) {
+	//http://localhost:9090/fetchbookedseats
+	@GetMapping(value="/fetchbookedseats")
+	public List<Passenger> fetchBookedSeats(@RequestParam("travelDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate travelDate, @RequestParam("busId") 
+	int busId) {
 		// TODO Auto-generated method stub
 		return busService.fetchBookedSeats(travelDate, busId);
 	}
 
+	//http://localhost:9090/frequentlytravelledroute
+	@GetMapping(value="/frequentlytravelledroute")
 	public List<Object[]> frequentlyTravelledRoute() {
 		// TODO Auto-generated method stub
 		return busService.frequentlyTravelledRoute();
 	}
 
-	@GetMapping(value="/viewAllBuses")
+	//http://localhost:9090/viewallbuses
+	@GetMapping(value="/viewallbuses")
 	public List<Bus> viewAllBuses() {
 		// TODO Auto-generated method stub
 		return busService.viewAllBuses();
 	}
 
-	
+	//http://localhost:9090/viewallregsiteredcustomers
+	@GetMapping(value="/viewallregsiteredcustomers")
 	public List<User> viewAllRegsiteredCustomers() {
 		// TODO Auto-generated method stub
 		return busService.viewAllRegsiteredCustomers();
 	}
 
+	//http://localhost:9090/viewcustomerwhoregisteredbutwithnobooking
+	@GetMapping(value="/viewcustomerwhoregisteredbutwithnobooking")
 	public List<User> viewCustomerWhoRegisteredButwithNoBooking() {
 		// TODO Auto-generated method stub
 		return busService.viewCustomerWhoRegisteredButwithNoBooking();
 	}
 
 	
-	public User rechargeWallet(int userId, int rechargeAmount) {
+	//http://localhost:9090/rechargeWallet
+	@PutMapping(value="/rechargeWallet")
+	public User rechargeWallet(@RequestParam("userId") int userId,@RequestParam("rechargeAmount") int rechargeAmount) {
 		// TODO Auto-generated method stub
 		return busService.rechargeWallet(userId, rechargeAmount);
 	}
 
-	public List<Object[]> ticketDetails(int ticketId) {
+	
+	//http://localhost:9090/ticketDetails
+	@GetMapping(value="/ticketDetails")
+	public List<Object[]> ticketDetails(@RequestParam("ticketId") int ticketId) {
 		// TODO Auto-generated method stub
 		return busService.ticketDetails(ticketId);
 	}
 
-	@GetMapping(value="/payThroughWallet")
+	//http://localhost:9090/paythroughwallet
+	@GetMapping(value="/paythroughwallet")
 	public String payThroughWallet(@RequestParam("userId") int userId,@RequestParam("amount") double amount) {
 		// TODO Auto-generated method stub
 		return busService.payThroughWallet(userId, amount);
 	}
 
-	@GetMapping(value="/mostPreferredBus(")
+	//http://localhost:9090/mostpreferredbus
+	@GetMapping(value="/mostpreferredbus")
 	public List<Integer> mostPreferredBus() {
 		// TODO Auto-generated method stub
 		return busService.mostPreferredBus();
 	}
 
-	public String cancelTicket(int ticketId) {
+    //http://localhost:9090/cancelticket
+	@DeleteMapping(value="/cancelticket")
+	public String cancelTicket(@RequestParam("ticketId") int ticketId) {
 		// TODO Auto-generated method stub
 		return busService.cancelTicket(ticketId);
 	}
 
-	public List<Ticket> viewTicketBookedByUserId(int userId) {
+    //http://localhost:9090/viewticketbookedbyuserid
+	@GetMapping(value="/viewticketbookedbyuserid")
+	public List<Ticket> viewTicketBookedByUserId(@RequestParam("userId") int userId) {
 		// TODO Auto-generated method stub
 		return busService.viewTicketBookedByUserId(userId);
 	}

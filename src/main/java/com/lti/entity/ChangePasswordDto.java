@@ -1,15 +1,14 @@
 package com.lti.entity;
 
-public class loginDto {
+public class ChangePasswordDto {
 
-	int id;
+	int userId;
 	String password;
-	
-	public int getid() {
-		return id;
+	public int getUserId() {
+		return userId;
 	}
-	public void setUserId(int id) {
-		this.id = id;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 	public String getPassword() {
 		return password;
