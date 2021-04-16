@@ -3,6 +3,7 @@ package com.lti.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.lti.entity.Admin;
 import com.lti.entity.Bus;
 import com.lti.entity.Passenger;
 import com.lti.entity.Ticket;
@@ -53,5 +54,7 @@ public interface BusReservationService {
 	public List<Ticket> viewTicketBookedByUserId(int userId); //18
 	
 	public User findUser(int userId);
+	
+	public Admin loginAdmin(int adminId, String password);
 	
 }

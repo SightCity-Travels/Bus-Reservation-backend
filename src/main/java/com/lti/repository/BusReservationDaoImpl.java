@@ -17,6 +17,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lti.entity.Admin;
 import com.lti.entity.Bus;
 import com.lti.entity.Passenger;
 import com.lti.entity.Status;
@@ -46,10 +47,12 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	}
 
 	public User loginUser(int userId, String password) {
-		String jpql = "select u from User u where u.userId=:uId and u.password=:uPass";
+		String jpql = "select u from User u where u.userId=:id and u.password=:pass";
+	
 		TypedQuery<User> query = em.createQuery(jpql, User.class);
-		query.setParameter("uId", userId);
-		query.setParameter("uPass", password);
+	
+		query.setParameter("id", userId);
+		query.setParameter("pass", password);
 		User user = null;
 		try {
 			user = query.getSingleResult();
@@ -252,7 +255,11 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		} else {
 			ticket.setStatus(Status.CANCELLED);
 			double refund = ticket.getTotalAmount();
-			ticket.getUser().setWallet(ticket.getUser().getWallet() + refund);
+			try {
+				ticket.getUser().setWallet(ticket.getUser().getWallet() + refund);
+			} catch (Exception e) {
+				return "You need to register to cancel your ticket";
+			}
 
 			em.merge(ticket);
 
@@ -287,6 +294,30 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	    }
 		
 		return user;
+	}
+
+	@Override
+	public Admin loginAdmin(int adminId, String password) {
+		String jpql1 = "select a from Admin a where a.adminId=:id and a.password=:pass";
+		
+		TypedQuery<Admin> query = em.createQuery(jpql1, Admin.class);
+	
+		query.setParameter("id", adminId);
+		query.setParameter("pass", password);
+		
+		Admin admin = null;
+		try {
+			admin = query.getSingleResult();
+
+		} catch (Exception e) {
+
+		}
+//		if (admin == null) {
+//			
+//			return null;
+//		}
+		return admin;
+		
 	}
 
 }

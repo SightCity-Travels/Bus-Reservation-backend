@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lti.entity.Admin;
 import com.lti.entity.Bus;
 import com.lti.entity.Passenger;
 import com.lti.entity.Ticket;
@@ -113,6 +114,12 @@ public class BusReservationServiceImpl implements BusReservationService {
 	public User findUser(int userId) {
 		
 		return busDao.findUser(userId);
+	}
+
+	@Override
+	public Admin loginAdmin(int adminId, String password) {
+		// TODO Auto-generated method stub
+		return busDao.loginAdmin(adminId, password);
 	}
 
 }
