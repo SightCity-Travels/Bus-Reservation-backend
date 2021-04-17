@@ -58,6 +58,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 			user = query.getSingleResult();
 
 		} catch (Exception e) {
+		
 
 		}
 		if (user == null) {
@@ -94,7 +95,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	}
 
 	@Transactional
-	public Ticket bookATicket(Ticket ticket) {
+	public Ticket bookATicket(Ticket ticket) { //remaining
 
 		
 		Ticket persistedTicket = em.merge(ticket);
@@ -131,7 +132,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 
 	}
 
-	public List<Passenger> fetchBookedSeats(LocalDate travelDate, int busId) {
+	public List<Passenger> fetchBookedSeats(LocalDate travelDate, int busId) { 
 
 		String jpql = "select p from Passenger p where p.ticket.travelDate=:tvlDate and p.ticket.bus.busId=:bId";
 		TypedQuery<Passenger> query = em.createQuery(jpql, Passenger.class);
@@ -193,7 +194,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	 */
 
 	@Transactional
-	public User rechargeWallet(int userId, int rechargeAmount) {
+	public User rechargeWallet(int userId, int rechargeAmount) { 
 		User user = em.find(User.class, userId);
 		user.setWallet(user.getWallet() + rechargeAmount);
 
@@ -237,7 +238,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		return tickets;
 	}
 
-	public List<Ticket> bookingsBasedOnPeriod(int choice, LocalDate travelDate, int month) {
+	public List<Ticket> bookingsBasedOnPeriod(int choice, LocalDate travelDate, int month) { 
 		if (choice == 1) {
 			String jpql = "select t from Ticket t where t.travelDate=:td";
 		} else if (choice == 2) {
