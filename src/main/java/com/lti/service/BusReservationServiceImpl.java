@@ -11,6 +11,7 @@ import com.lti.entity.Bus;
 import com.lti.entity.Passenger;
 import com.lti.entity.Ticket;
 import com.lti.entity.User;
+import com.lti.exception.CustomerServiceException;
 import com.lti.repository.BusReservationDao;
 import com.lti.repository.BusReservationDaoImpl;
 
@@ -20,11 +21,15 @@ public class BusReservationServiceImpl implements BusReservationService {
 	@Autowired
 	BusReservationDao busDao;
 	
+	@Autowired
+	EmailService emailservice;
+	
 	public User registerOrUpdateUser(User user) {
-		// TODO Auto-generated method stub
 		return busDao.registerOrUpdateUser(user);
+		
 	}
 
+	
 	public Bus  addOrUpdateBus(Bus bus) {
 		// TODO Auto-generated method stub
 		return busDao. addOrUpdateBus(bus);
@@ -120,6 +125,25 @@ public class BusReservationServiceImpl implements BusReservationService {
 	public Admin loginAdmin(int adminId, String password) {
 		// TODO Auto-generated method stub
 		return busDao.loginAdmin(adminId, password);
+	}
+
+
+	@Override
+	public void sendEmail(User user) {
+		if(!busDao.isCustomerPresent(user.getEmail())) {
+			User user1 = null;
+			user1=busDao.registerOrUpdateUser(user);
+			String subject = "Registration confirmation";
+			String text = "Hi "+user.getFirstName()+" "
+					+ " You have been Successfully registered. "+"Your userId is "+user.getUserId()+". "+"Please use this to login";
+			emailservice.sendEmailForNewRegistration(user.getEmail(),text,subject);
+			System.out.println("Mail sent");
+		
+			
+		}
+		else
+			throw new CustomerServiceException("Customer already registered!");
+		
 	}
 
 }

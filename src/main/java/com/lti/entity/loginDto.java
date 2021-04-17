@@ -5,7 +5,7 @@ public class loginDto {
 	int id;
 	String password;
 	
-	public int getid() {
+	public int getId() {
 		return id;
 	}
 	public void setUserId(int id) {

@@ -22,7 +22,7 @@ import com.lti.entity.Bus;
 import com.lti.entity.ChangePasswordDto;
 import com.lti.entity.Passenger;
 import com.lti.entity.Ticket;
-import com.lti.entity.TicketDetailsDto;
+
 import com.lti.entity.User;
 import com.lti.entity.loginDto;
 import com.lti.service.BusReservationService;
@@ -37,18 +37,11 @@ public class BusReservationController {
 	//http://localhost:9090/registerorupdateuser
 	@PostMapping(value="/registerorupdateuser")
 	public User registerOrUpdateUser(@RequestBody User user) {
-        //		User user= new User();
-		/*
-		 * DateTimeFormatter formatter= DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		 * user.setDateOfBirth(LocalDate.parse(userdto.getDateOfBirth() , formatter));
-		 * user.setFirstName(userdto.getFirstName());
-		 * user.setLastName(userdto.getLastName()); user.setEmail(userdto.getEmail());
-		 * user.setGender(userdto.getGender()); user.setPassword(user.getPassword());
-		 * user.setContactNo(userdto.getContactNo());
-		 * user.setAddress(userdto.getAddress()); user.setWallet(userdto.getWallet());
-		 */
+      
 		User userPersisted =  busService.registerOrUpdateUser(user);
+		busService.sendEmail(userPersisted);
 		return userPersisted;
+		
 	}
 	
 	//http://localhost:9090/addorupdatebus
@@ -66,7 +59,7 @@ public class BusReservationController {
 		User userPersisted = null;
 		
 		
-		userPersisted= busService.loginUser(dto.getid(), dto.getPassword());
+		userPersisted= busService.loginUser(dto.getId(), dto.getPassword());
 		
 		return userPersisted;
 	}
@@ -75,9 +68,7 @@ public class BusReservationController {
 	@GetMapping(value="/loginadmin")
 	public Admin loginAdmin(@RequestBody loginDto dto) {
 			
-			Admin adminPersisted = null;
-			
-			adminPersisted= busService.loginAdmin(dto.getid(), dto.getPassword());
+			Admin adminPersisted =  busService.loginAdmin(dto.getId(), dto.getPassword());
 			
 			return adminPersisted;
 		}

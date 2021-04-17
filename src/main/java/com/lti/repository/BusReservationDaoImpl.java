@@ -308,6 +308,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		Admin admin = null;
 		try {
 			admin = query.getSingleResult();
+			
 
 		} catch (Exception e) {
 
@@ -318,6 +319,15 @@ public class BusReservationDaoImpl implements BusReservationDao {
 //		}
 		return admin;
 		
+	}
+
+	@Override
+	public Boolean isCustomerPresent(String email) {
+		return (Long)
+				em
+				.createQuery("select count(u.userId) from User u where u.email = :em")
+				.setParameter("em", email)
+				.getSingleResult() == 1 ? true : false;
 	}
 
 }
