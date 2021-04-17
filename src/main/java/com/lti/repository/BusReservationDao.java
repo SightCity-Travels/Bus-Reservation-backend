@@ -57,5 +57,7 @@ public interface BusReservationDao {
 	
 	public Admin loginAdmin(int adminId, String password);
 	
+	public Boolean isCustomerPresent(String email);
+	
 
 }
