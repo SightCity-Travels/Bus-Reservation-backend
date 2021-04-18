@@ -1,6 +1,6 @@
 package com.lti.entity;
 
-public class loginDto {
+public class LoginDto {
 
 	int id;
 	String password;
