@@ -11,12 +11,15 @@ public class BookTicket {
 	public Ticket getTicket() {
 		return ticket;
 	}
+	
 	public void setTicket(Ticket ticket) {
 		this.ticket = ticket;
 	}
+	
 	public List<Passenger> getPassengers() {
 		return passengers;
 	}
+	
 	public void setPassengers(List<Passenger> passengers) {
 		this.passengers = passengers;
 	}
