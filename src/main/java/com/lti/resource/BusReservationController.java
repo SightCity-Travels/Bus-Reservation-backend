@@ -39,7 +39,7 @@ public class BusReservationController {
 	public User registerOrUpdateUser(@RequestBody User user) {
       
 		User userPersisted =  busService.registerOrUpdateUser(user);
-		busService.sendEmail(userPersisted);
+//		busService.sendEmail(userPersisted);
 		return userPersisted;
 		
 	}
