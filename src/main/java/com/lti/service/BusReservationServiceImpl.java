@@ -128,22 +128,22 @@ public class BusReservationServiceImpl implements BusReservationService {
 	}
 
 
-	@Override
-	public void sendEmail(User user) {
-		if(!busDao.isCustomerPresent(user.getEmail())) {
-			User user1 = null;
-			user1=busDao.registerOrUpdateUser(user);
-			String subject = "Registration confirmation";
-			String text = "Hi "+user.getFirstName()+" "
-					+ " You have been Successfully registered. "+"Your userId is "+user.getUserId()+". "+"Please use this to login";
-			emailservice.sendEmailForNewRegistration(user.getEmail(),text,subject);
-			System.out.println("Mail sent");
-		
-			
-		}
-		else
-			throw new CustomerServiceException("Customer already registered!");
-		
-	}
+//	@Override
+//	public void sendEmail(User user) {
+//		if(!busDao.isCustomerPresent(user.getEmail())) {
+//			User user1 = null;
+//			user1=busDao.registerOrUpdateUser(user);
+//			String subject = "Registration confirmation";
+//			String text = "Hi "+user.getFirstName()+" "
+//					+ " You have been Successfully registered. "+"Your userId is "+user.getUserId()+". "+"Please use this to login";
+//			emailservice.sendEmailForNewRegistration(user.getEmail(),text,subject);
+//			System.out.println("Mail sent");
+//		
+//			
+//		}
+//		else
+//			throw new CustomerServiceException("Customer already registered!");
+//		
+//	}
 
 }
