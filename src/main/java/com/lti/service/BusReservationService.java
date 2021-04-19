@@ -15,7 +15,7 @@ public interface BusReservationService {
 
 	public Bus  addOrUpdateBus(Bus bus); //2
 
-	public User loginUser(int userId, String password); //3
+	public boolean loginUser(int userId, String password); //3
 
 //	public Passenger addOrUpdatePassenger(Passenger passenger);
 
@@ -27,7 +27,7 @@ public interface BusReservationService {
 
 	public Bus chooseBus(int busId); //7
 	
-	public List<Passenger> fetchBookedSeats(LocalDate travelDate, int busId); //8
+	public List<String> fetchBookedSeats(LocalDate travelDate, int busId); //8
 	
 	public List<Object[]> frequentlyTravelledRoute(); //9
 	
@@ -55,8 +55,9 @@ public interface BusReservationService {
 	
 	public User findUser(int userId);
 	
-	public Admin loginAdmin(int adminId, String password);
-	
-	//public void sendEmail(User user);
+	public Boolean loginAdmin(int adminId, String password);
+
+//	public void sendEmail(User user);
+
 	
 }

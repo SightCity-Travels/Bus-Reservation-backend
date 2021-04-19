@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -127,6 +128,7 @@ public class User {
 		this.wallet = wallet;
 	}
 
+	@JsonIgnore
 	public List<Ticket> getTickets() {
 		return tickets;
 	}

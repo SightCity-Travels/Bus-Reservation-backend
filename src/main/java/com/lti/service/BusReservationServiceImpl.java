@@ -35,7 +35,7 @@ public class BusReservationServiceImpl implements BusReservationService {
 		return busDao. addOrUpdateBus(bus);
 	}
 
-	public User loginUser(int userId, String password) {
+	public boolean loginUser(int userId, String password) {
 		// TODO Auto-generated method stub
 		return busDao.loginUser(userId, password);
 	}
@@ -60,7 +60,7 @@ public class BusReservationServiceImpl implements BusReservationService {
 		return busDao.chooseBus(busId);
 	}
 
-	public List<Passenger> fetchBookedSeats(LocalDate travelDate, int busId) {
+	public List<String> fetchBookedSeats(LocalDate travelDate, int busId) {
 		// TODO Auto-generated method stub
 		return busDao.fetchBookedSeats(travelDate, busId);
 	}
@@ -122,7 +122,7 @@ public class BusReservationServiceImpl implements BusReservationService {
 	}
 
 	@Override
-	public Admin loginAdmin(int adminId, String password) {
+	public Boolean loginAdmin(int adminId, String password) {
 		// TODO Auto-generated method stub
 		return busDao.loginAdmin(adminId, password);
 	}

@@ -103,6 +103,7 @@ public class Ticket {
 		this.user = user;
 	}
 
+	@JsonIgnore
 	public List<Passenger> getPassengers() {
 		return passengers;
 	}
@@ -111,6 +112,7 @@ public class Ticket {
 		this.passengers = passengers;
 	}
 
+	@JsonIgnore
 	public Bus getBus() {
 		return bus;
 	}

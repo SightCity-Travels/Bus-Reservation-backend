@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Passenger {
 
@@ -56,6 +58,7 @@ public class Passenger {
 		this.seatNo = seatNo;
 	}
 
+	@JsonIgnore
 	public Ticket getTicket() {
 		return ticket;
 	}
