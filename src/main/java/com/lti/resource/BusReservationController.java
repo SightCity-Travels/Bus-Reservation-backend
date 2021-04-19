@@ -42,6 +42,7 @@ public class BusReservationController {
 		User userPersisted =  busService.registerOrUpdateUser(user);
 		//busService.sendEmail(userPersisted);
 //		busService.sendEmail(userPersisted);
+	    busService.sendEmail(userPersisted);
 		return userPersisted;
 		
 	}
@@ -119,10 +120,12 @@ public class BusReservationController {
 	}
 
 	
-	/*
-	 * public Bus chooseBus(int busId) { // TODO Auto-generated method stub return
-	 * busService.chooseBus(busId); }
-	 */
+	
+	  public Bus chooseBus(int busId) { 
+		  // TODO Auto-generated method stub return
+	  return busService.chooseBus(busId); 
+	  }
+	 
 
 	
 	//http://localhost:9090/fetchbookedseats
