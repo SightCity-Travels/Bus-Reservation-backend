@@ -122,10 +122,10 @@ public class BusReservationController {
 	}
 
 	
-	/*
-	 * public Bus chooseBus(int busId) { // TODO Auto-generated method stub return
-	 * busService.chooseBus(busId); }
-	 */
+	@GetMapping(value="/getbusbyid")
+	  public Bus chooseBus(@RequestParam ("busid")int busId) { // TODO Auto-generated method stub return
+	   return busService.chooseBus(busId); }
+	 
 
 	
 	//http://localhost:9090/fetchbookedseats
