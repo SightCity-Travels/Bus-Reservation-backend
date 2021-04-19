@@ -41,9 +41,12 @@ public class BusReservationController {
       
 		User userPersisted =  busService.registerOrUpdateUser(user);
 
+
 		//busService.sendEmail(userPersisted);
 
 //		busService.sendEmail(userPersisted);
+
+	    busService.sendEmail(userPersisted);
 
 		return userPersisted;
 		
@@ -122,10 +125,11 @@ public class BusReservationController {
 	}
 
 	
+
 	@GetMapping(value="/getbusbyid")
 	  public Bus chooseBus(@RequestParam ("busid")int busId) { // TODO Auto-generated method stub return
 	   return busService.chooseBus(busId); }
-	 
+
 
 	
 	//http://localhost:9090/fetchbookedseats

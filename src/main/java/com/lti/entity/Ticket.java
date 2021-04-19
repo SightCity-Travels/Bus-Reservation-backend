@@ -29,7 +29,7 @@ public class Ticket {
 	
 	LocalDate travelDate;
 	
-	
+	//String contactNo;
 	String email;
 	double totalAmount;
 	Status status;
