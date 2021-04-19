@@ -91,7 +91,7 @@ public class BusReservationServiceImpl implements BusReservationService {
 		return busDao.rechargeWallet(userId, rechargeAmount);
 	}
 
-	public List<Object[]> ticketDetails(int ticketId) {
+	public Ticket ticketDetails(int ticketId) {
 		// TODO Auto-generated method stub
 		return busDao.ticketDetails(ticketId);
 	}
@@ -146,6 +146,20 @@ public class BusReservationServiceImpl implements BusReservationService {
 	//  } else throw new CustomerServiceException("Customer already registered!");
 	  
 	  }
+
+
+	@Override
+	public List<Passenger> getPassenger(int ticketId) {
+		// TODO Auto-generated method stub
+		return busDao.getPassenger(ticketId);
+	}
+
+
+	@Override
+	public Bus getBus(int ticketId) {
+		// TODO Auto-generated method stub
+		return busDao.getBus(ticketId);
+	}
 	 
 	  
 	 
