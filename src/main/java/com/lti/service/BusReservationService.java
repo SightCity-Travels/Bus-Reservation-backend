@@ -57,6 +57,6 @@ public interface BusReservationService {
 	
 	public Boolean loginAdmin(int adminId, String password);
 	
-//	public void sendEmail(User user);
+	public void sendEmail(User user);
 	
 }
