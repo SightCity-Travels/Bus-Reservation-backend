@@ -46,11 +46,11 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		return busPersisted;
 	}
 
-	public User loginUser(int userId, String password) {
+	public boolean loginUser(int userId, String password) {
 		String jpql = "select u from User u where u.userId=:id and u.password=:pass";
-	
+
 		TypedQuery<User> query = em.createQuery(jpql, User.class);
-	
+
 		query.setParameter("id", userId);
 		query.setParameter("pass", password);
 		User user = null;
@@ -61,16 +61,16 @@ public class BusReservationDaoImpl implements BusReservationDao {
 
 		}
 		if (user == null) {
-			return null;
+			return false;
 		}
-		return user;
+		return true;
 	}
 
 	/*
 	 * public Passenger addOrUpdatePassenger(Passenger passenger) {
 	 * 
-	 * tx.begin(); Passenger passengerPersisted = em.merge(passenger);
-	 * tx.commit(); return passengerPersisted; }
+	 * tx.begin(); Passenger passengerPersisted = em.merge(passenger); tx.commit();
+	 * return passengerPersisted; }
 	 */
 
 	@Transactional
@@ -96,7 +96,6 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	@Transactional
 	public Ticket bookATicket(Ticket ticket) {
 
-		
 		Ticket persistedTicket = em.merge(ticket);
 		/*
 		 * int ticketId = persistedTicket.getTicketId(); String jpql =
@@ -131,14 +130,14 @@ public class BusReservationDaoImpl implements BusReservationDao {
 
 	}
 
-	public List<Passenger> fetchBookedSeats(LocalDate travelDate, int busId) {
+	public List<String> fetchBookedSeats(LocalDate travelDate, int busId) {
 
-		String jpql = "select p from Passenger p where p.ticket.travelDate=:tvlDate and p.ticket.bus.busId=:bId";
-		TypedQuery<Passenger> query = em.createQuery(jpql, Passenger.class);
+		String jpql = "select p.seatNo from Passenger p where p.ticket.travelDate=:tvlDate and p.ticket.bus.busId=:bId";
+		TypedQuery<String> query = em.createQuery(jpql, String.class);
 		query.setParameter("tvlDate", travelDate);
 		query.setParameter("bId", busId);
-		List<Passenger> passengers = query.getResultList();
-		return passengers;
+		List<String> seatNo = query.getResultList();
+		return seatNo;
 
 	}
 
@@ -178,8 +177,8 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	}
 
 	/*
-	 * public Bus updateRoute(int busId, String source, String destination) {
-	 * String jqpl = "select b from Bus b where b.busId=:bid";
+	 * public Bus updateRoute(int busId, String source, String destination) { String
+	 * jqpl = "select b from Bus b where b.busId=:bid";
 	 * 
 	 * TypedQuery<Bus> query = em.createQuery(jqpl, Bus.class);
 	 * query.setParameter("bid", busId); Bus bus = null;
@@ -285,48 +284,44 @@ public class BusReservationDaoImpl implements BusReservationDao {
 
 	@Transactional
 	public User findUser(int userId) {
-		
+
 		User user = null;
-		user = em.find(User.class,userId);
-		
-	    if (Objects.isNull(user)) {
-	    	return user;
-	    }
-		
+		user = em.find(User.class, userId);
+
+		if (Objects.isNull(user)) {
+			return user;
+		}
+
 		return user;
 	}
 
 	@Override
-	public Admin loginAdmin(int adminId, String password) {
+	public Boolean loginAdmin(int adminId, String password) {
 		String jpql1 = "select a from Admin a where a.adminId=:id and a.password=:pass";
-		
+
 		TypedQuery<Admin> query = em.createQuery(jpql1, Admin.class);
-	
+
 		query.setParameter("id", adminId);
 		query.setParameter("pass", password);
-		
+
 		Admin admin = null;
 		try {
 			admin = query.getSingleResult();
-			
 
 		} catch (Exception e) {
 
 		}
-//		if (admin == null) {
-//			
-//			return null;
-//		}
-		return admin;
-		
+		if (admin == null) {
+
+			return false;
+		}
+		return true;
+
 	}
 
 	@Override
 	public Boolean isCustomerPresent(String email) {
-		return (Long)
-				em
-				.createQuery("select count(u.userId) from User u where u.email = :em")
-				.setParameter("em", email)
+		return (Long) em.createQuery("select count(u.userId) from User u where u.email = :em").setParameter("em", email)
 				.getSingleResult() == 1 ? true : false;
 	}
 

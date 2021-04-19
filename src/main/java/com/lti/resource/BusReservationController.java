@@ -20,11 +20,12 @@ import com.lti.entity.Admin;
 import com.lti.entity.BookTicket;
 import com.lti.entity.Bus;
 import com.lti.entity.ChangePasswordDto;
+import com.lti.entity.LoginDto;
 import com.lti.entity.Passenger;
 import com.lti.entity.Ticket;
 
 import com.lti.entity.User;
-import com.lti.entity.loginDto;
+
 import com.lti.service.BusReservationService;
 
 @RestController
@@ -40,6 +41,7 @@ public class BusReservationController {
       
 		User userPersisted =  busService.registerOrUpdateUser(user);
 		//busService.sendEmail(userPersisted);
+//		busService.sendEmail(userPersisted);
 		return userPersisted;
 		
 	}
@@ -53,10 +55,10 @@ public class BusReservationController {
 	}
 
 	//http://localhost:9090/login
-	@GetMapping(value="/login")
-	public User login(@RequestBody loginDto dto) {
+	@PostMapping(value="/login")
+	public boolean login(@RequestBody LoginDto dto) {
 		
-		User userPersisted = null;
+		boolean userPersisted;
 		
 		
 		userPersisted= busService.loginUser(dto.getId(), dto.getPassword());
@@ -64,11 +66,11 @@ public class BusReservationController {
 		return userPersisted;
 	}
 	
-	//http://localhost:9090/loginadmin
-	@GetMapping(value="/loginadmin")
-	public Admin loginAdmin(@RequestBody loginDto dto) {
+	//http://localhost:8080/loginadmin
+	@PostMapping(value="/loginadmin")
+	public Boolean loginAdmin(@RequestBody LoginDto dto) {
 			
-			Admin adminPersisted =  busService.loginAdmin(dto.getId(), dto.getPassword());
+			Boolean adminPersisted =  busService.loginAdmin(dto.getId(), dto.getPassword());
 			
 			return adminPersisted;
 		}
@@ -125,7 +127,7 @@ public class BusReservationController {
 	
 	//http://localhost:9090/fetchbookedseats
 	@GetMapping(value="/fetchbookedseats")
-	public List<Passenger> fetchBookedSeats(@RequestParam("travelDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate travelDate, @RequestParam("busId") 
+	public List<String> fetchBookedSeats(@RequestParam("travelDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate travelDate, @RequestParam("busId") 
 	int busId) {
 		// TODO Auto-generated method stub
 		return busService.fetchBookedSeats(travelDate, busId);
