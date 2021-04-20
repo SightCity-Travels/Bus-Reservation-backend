@@ -72,7 +72,7 @@ public class BusReservationController {
 		return userPersisted;
 	}
 	
-	//http://localhost:8080/loginadmin
+	//http://localhost:9090/loginadmin
 	@PostMapping(value="/loginadmin")
 	public Boolean loginAdmin(@RequestBody LoginDto dto) {
 			
