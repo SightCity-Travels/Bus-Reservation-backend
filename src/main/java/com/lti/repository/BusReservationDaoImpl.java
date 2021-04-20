@@ -296,15 +296,12 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		return user;
 	}
 
-	@Override
+	
 	public Boolean loginAdmin(int adminId, String password) {
 		String jpql1 = "select a from Admin a where a.adminId=:id and a.password=:pass";
-
 		TypedQuery<Admin> query = em.createQuery(jpql1, Admin.class);
-
 		query.setParameter("id", adminId);
 		query.setParameter("pass", password);
-
 		Admin admin = null;
 		try {
 			admin = query.getSingleResult();
@@ -312,12 +309,13 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		} catch (Exception e) {
 
 		}
-		if (admin == null) {
-
+		finally {
+			if (admin != null) {
+				return true;
+			}
 			return false;
 		}
-		return true;
-
+		
 	}
 
 	@Override
