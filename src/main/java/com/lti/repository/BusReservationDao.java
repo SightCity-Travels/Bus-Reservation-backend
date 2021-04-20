@@ -19,7 +19,7 @@ public interface BusReservationDao {
 
 //	public Passenger addOrUpdatePassenger(Passenger passenger);
 
-	public String changePassword(int userId, String password); //4
+	public boolean changePassword(int userId, String password); //4
 
 	public Ticket bookATicket(Ticket ticket); //5
 

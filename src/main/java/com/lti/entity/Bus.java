@@ -23,7 +23,6 @@ public class Bus {
 	String busName;
 	String typeOfBus;
 	String duration;
-	
 	LocalTime timeOfArrival;
 	LocalTime timeOfDeparture;
 	double fare;
