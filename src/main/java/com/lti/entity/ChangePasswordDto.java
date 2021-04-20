@@ -4,6 +4,7 @@ public class ChangePasswordDto {
 
 	int userId;
 	String password;
+	
 	public int getUserId() {
 		return userId;
 	}

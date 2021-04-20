@@ -77,12 +77,13 @@ public class BusReservationController {
 	
 	//http://localhost:9090/changepassword
 	@PutMapping(value="/changepassword")
-	public String changePassword(@RequestBody ChangePasswordDto dto) {
+	public boolean changePassword(@RequestBody ChangePasswordDto dto) {
 		
-		String result = busService.changePassword(dto.getUserId(),dto.getPassword());
-		 return result; 
-		 
+		boolean result = busService.changePassword(dto.getUserId(),dto.getPassword());
+		 return result;  
 	}
+	
+	
 
 	//http://localhost:9090/bookaticket
 	@PostMapping(value="/bookaticket")
@@ -165,7 +166,7 @@ public class BusReservationController {
 
 	
 	//http://localhost:9090/rechargeWallet
-	@PutMapping(value="/rechargeWallet")
+	@GetMapping(value="/rechargeWallet")
 	public User rechargeWallet(@RequestParam("userId") int userId,@RequestParam("rechargeAmount") int rechargeAmount) {
 		// TODO Auto-generated method stub
 		return busService.rechargeWallet(userId, rechargeAmount);
@@ -207,6 +208,7 @@ public class BusReservationController {
 		return busService.viewTicketBookedByUserId(userId);
 	}
 	
+	
 	//http://localhost:9090/getPassengerList
     @GetMapping(value="/getPassengerList")
 	public List<Passenger> getPassengerList(@RequestParam("ticketId") int ticketId){
@@ -217,5 +219,11 @@ public class BusReservationController {
     @GetMapping(value="/getBusByTicketId")
     public Bus getBusByTicketId(@RequestParam("ticketId") int ticketId) {
     	return busService.getBus(ticketId);
+    }
+    
+  //http://localhost:9090/finduserbyid
+    @GetMapping(value="finduserbyid")
+    public User findUser(@RequestParam int userId) {
+    	return busService.findUser(userId);
     }
 }
