@@ -40,7 +40,7 @@ public class BusReservationController {
 	public User registerOrUpdateUser(@RequestBody User user) {
       
 		User userPersisted =  busService.registerOrUpdateUser(user);
-//		busService.sendEmail(userPersisted);
+	    busService.sendEmail(userPersisted);
 		return userPersisted;
 		
 	}
@@ -118,10 +118,13 @@ public class BusReservationController {
 	}
 
 	
-	/*
-	 * public Bus chooseBus(int busId) { // TODO Auto-generated method stub return
-	 * busService.chooseBus(busId); }
-	 */
+	
+	@GetMapping(value="/getbusbyid")
+	  public Bus chooseBus(@RequestParam("busId") int busId) { 
+		  // TODO Auto-generated method stub return
+	  return busService.chooseBus(busId); 
+	  }
+	 
 
 	
 	//http://localhost:9090/fetchbookedseats
@@ -171,7 +174,7 @@ public class BusReservationController {
 	
 	//http://localhost:9090/ticketDetails
 	@GetMapping(value="/ticketDetails")
-	public List<Object[]> ticketDetails(@RequestParam("ticketId") int ticketId) {
+	public Ticket ticketDetails(@RequestParam("ticketId") int ticketId) {
 		// TODO Auto-generated method stub
 		return busService.ticketDetails(ticketId);
 	}
@@ -203,5 +206,16 @@ public class BusReservationController {
 		// TODO Auto-generated method stub
 		return busService.viewTicketBookedByUserId(userId);
 	}
-
+	
+	//http://localhost:9090/getPassengerList
+    @GetMapping(value="/getPassengerList")
+	public List<Passenger> getPassengerList(@RequestParam("ticketId") int ticketId){
+		return busService.getPassenger(ticketId);
+	}
+    
+    //http://localhost:9090/getBusByTicketId
+    @GetMapping(value="/getBusByTicketId")
+    public Bus getBusByTicketId(@RequestParam("ticketId") int ticketId) {
+    	return busService.getBus(ticketId);
+    }
 }
