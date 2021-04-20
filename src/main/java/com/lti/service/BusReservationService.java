@@ -41,7 +41,7 @@ public interface BusReservationService {
 	
 	public User rechargeWallet(int userId,int rechargeAmount); //13
 	
-	public List<Object[]> ticketDetails(int ticketId); //14
+	public Ticket ticketDetails(int ticketId); //14
 	
 	public String payThroughWallet(int userId, double amount); //15
 	
@@ -59,4 +59,9 @@ public interface BusReservationService {
 
 	public void sendEmail(User user);
 
+	
+	public List<Passenger> getPassenger(int ticketId);
+	
+	public Bus getBus(int ticketId);
+	
 }

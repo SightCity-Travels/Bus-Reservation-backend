@@ -206,11 +206,12 @@ public class BusReservationDaoImpl implements BusReservationDao {
 
 	}
 
-	public List<Object[]> ticketDetails(int ticketId) {
-		String jpql = "select t , p from Ticket t , Passenger p where t.ticketId=:tid and p.ticket.ticketId=:tid";
-		TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
+	public Ticket ticketDetails(int ticketId) {
+		//String jpql = "select t , p from Ticket t , Passenger p where t.ticketId=:tid and p.ticket.ticketId=:tid";
+		String jpql="select t from Ticket t where t.ticketId=:tid";
+		TypedQuery<Ticket> query = em.createQuery(jpql, Ticket.class);
 		query.setParameter("tid", ticketId);
-		List<Object[]> ticketdetails = query.getResultList();
+		Ticket ticketdetails = query.getSingleResult();
 
 		return ticketdetails;
 	}
@@ -327,6 +328,27 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	public Boolean isCustomerPresent(String email) {
 		return (Long) em.createQuery("select count(u.userId) from User u where u.email = :em").setParameter("em", email)
 				.getSingleResult() == 1 ? true : false;
+	}
+
+	@Override
+	public List<Passenger> getPassenger(int ticketId) {
+		String jpql = "select  p from Passenger p where p.ticket.ticketId=:tid";
+		TypedQuery<Passenger> query = em.createQuery(jpql, Passenger.class);
+		query.setParameter("tid", ticketId);
+		List<Passenger> passsengerList = query.getResultList();
+
+		return passsengerList;
+	}
+
+	@Override
+	public Bus getBus(int ticketId) {
+		String jpql="select b from Bus b where b.busId =(select t.bus.busId from Ticket t where t.ticketId=:tid)";
+		TypedQuery<Bus> query = em.createQuery(jpql, Bus.class);
+		query.setParameter("tid", ticketId);
+		Bus getBus = query.getSingleResult();
+		
+		return getBus;
+		
 	}
 
 }
