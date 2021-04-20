@@ -13,8 +13,10 @@ public interface BusReservationDao {
 
 	public User registerOrUpdateUser(User user); //1
 
-	public Bus addOrUpdateBus(Bus bus); //2
+	public Bus addBus(Bus bus); //2
 
+	public Bus updateBus(int busId, String source, String destination, double fare);
+	
 	public boolean loginUser(int userId, String password); //3
 
 //	public Passenger addOrUpdatePassenger(Passenger passenger);

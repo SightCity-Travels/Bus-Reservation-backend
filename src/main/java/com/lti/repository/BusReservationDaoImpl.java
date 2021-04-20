@@ -39,7 +39,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	}
 
 	@Transactional
-	public Bus addOrUpdateBus(Bus bus) {
+	public Bus addBus(Bus bus) {
 
 		Bus busPersisted = em.merge(bus);
 
@@ -345,6 +345,22 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		
 		return getBus;
 		
+	}
+
+
+
+	@Override
+	public Bus updateBus(int busId, String source, String destination, double fare) {
+		String jpql="update Bus b set b.source=:s, b.destination=:d , b.fare=:f where b.busId=:bid";
+		TypedQuery<Bus> query = em.createQuery(jpql, Bus.class);
+		query.setParameter("bid", busId);
+		query.setParameter("s", source);
+		query.setParameter("d", destination);
+		query.setParameter("f", fare);
+		
+		Bus updateBus = query.getSingleResult();
+		
+		return updateBus;
 	}
 
 }
