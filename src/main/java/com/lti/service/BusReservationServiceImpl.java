@@ -41,7 +41,7 @@ public class BusReservationServiceImpl implements BusReservationService {
 		return busDao.loginUser(userId, password);
 	}
 
-	public String changePassword(int userId, String password) {
+	public boolean changePassword(int userId, String password) {
 		// TODO Auto-generated method stub
 		return busDao.changePassword(userId, password);
 	}
@@ -118,7 +118,6 @@ public class BusReservationServiceImpl implements BusReservationService {
 
 	@Override
 	public User findUser(int userId) {
-		
 		return busDao.findUser(userId);
 	}
 

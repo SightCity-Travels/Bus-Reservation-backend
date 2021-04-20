@@ -74,7 +74,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	 */
 
 	@Transactional
-	public String changePassword(int userId, String password) {
+	public boolean changePassword(int userId, String password) {
 		String jpql = "select u from User u where u.userId=:uId";
 		TypedQuery<User> query = em.createQuery(jpql, User.class);
 		query.setParameter("uId", userId);
@@ -88,9 +88,9 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		} catch (Exception e) {
 		}
 		if (user == null) {
-			return "User not found";
+			return false;
 		}
-		return "Password set successfully for the user";
+		return true;
 	}
 
 	@Transactional
@@ -296,15 +296,12 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		return user;
 	}
 
-	@Override
+	
 	public Boolean loginAdmin(int adminId, String password) {
 		String jpql1 = "select a from Admin a where a.adminId=:id and a.password=:pass";
-
 		TypedQuery<Admin> query = em.createQuery(jpql1, Admin.class);
-
 		query.setParameter("id", adminId);
 		query.setParameter("pass", password);
-
 		Admin admin = null;
 		try {
 			admin = query.getSingleResult();
@@ -313,11 +310,9 @@ public class BusReservationDaoImpl implements BusReservationDao {
 
 		}
 		if (admin == null) {
-
 			return false;
 		}
 		return true;
-
 	}
 
 	@Override
