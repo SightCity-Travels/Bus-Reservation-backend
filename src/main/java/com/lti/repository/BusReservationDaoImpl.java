@@ -111,7 +111,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		return persistedTicket;
 
 	}
-
+	
 	public List<Bus> searchBus(String source, String destination) {
 		String jpql = " select b from Bus b where b.source=:s and b.destination=:d";
 
@@ -121,7 +121,8 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		List<Bus> bus = query.getResultList();
 		return bus;
 	}
-
+	
+	
 	public Bus chooseBus(int busId) {
 		String jpql = "select b from Bus b where b.busId=:bid";
 		TypedQuery<Bus> query = em.createQuery(jpql, Bus.class);

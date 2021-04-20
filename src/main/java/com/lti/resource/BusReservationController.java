@@ -127,7 +127,7 @@ public class BusReservationController {
 	
 
 	@GetMapping(value="/getbusbyid")
-	  public Bus chooseBus(@RequestParam ("busid")int busId) { // TODO Auto-generated method stub return
+	  public Bus chooseBus(@RequestParam("busId") int busId) { // TODO Auto-generated method stub return
 	   return busService.chooseBus(busId); }
 
 
