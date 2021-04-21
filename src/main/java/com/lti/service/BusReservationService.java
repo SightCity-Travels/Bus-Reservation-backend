@@ -49,7 +49,7 @@ public interface BusReservationService {
 	
 	// public List<Ticket> bookingsBasedOnPeriod(int choice, LocalDate travelDate, int month);
 	
-	public String cancelTicket(int ticketId); //17
+	public boolean cancelTicket(int ticketId); //17
 	
 	public List<Ticket> viewTicketBookedByUserId(int userId); //18
 	

@@ -106,7 +106,7 @@ public class BusReservationServiceImpl implements BusReservationService {
 		return busDao.mostPreferredBus();
 	}
 
-	public String cancelTicket(int ticketId) {
+	public boolean cancelTicket(int ticketId) {
 		// TODO Auto-generated method stub
 		return busDao.cancelTicket(ticketId);
 	}

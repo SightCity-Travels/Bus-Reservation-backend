@@ -204,7 +204,7 @@ public class BusReservationController {
 
     //http://localhost:9090/cancelticket
 	@DeleteMapping(value="/cancelticket")
-	public String cancelTicket(@RequestParam("ticketId") int ticketId) {
+	public boolean cancelTicket(@RequestParam("ticketId") int ticketId) {
 		// TODO Auto-generated method stub
 		return busService.cancelTicket(ticketId);
 	}
