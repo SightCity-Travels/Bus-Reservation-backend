@@ -25,14 +25,10 @@ public class BusReservationServiceImpl implements BusReservationService {
 	EmailService emailservice;
 	
 	public User registerOrUpdateUser(User user) {
-		
 		return busDao.registerOrUpdateUser(user);
-		
 	}
 
-	
 	public Bus  addOrUpdateBus(Bus bus) {
-		// TODO Auto-generated method stub
 		return busDao. addOrUpdateBus(bus);
 	}
 

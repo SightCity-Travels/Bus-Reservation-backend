@@ -38,7 +38,6 @@ public class BusReservationController {
 	//http://localhost:9090/registerorupdateuser
 	@PostMapping(value="/registerorupdateuser")
 	public User registerOrUpdateUser(@RequestBody User user) {
-      
 		User userPersisted =  busService.registerOrUpdateUser(user);
 	    busService.sendEmail(userPersisted);
 		return userPersisted;
@@ -47,8 +46,7 @@ public class BusReservationController {
 	
 	//http://localhost:9090/addorupdatebus
 	@PostMapping(value="/addorupdatebus")
-	public Bus  addOrUpdateBus(@RequestBody Bus bus) {
-	
+	public Bus  addOrUpdateBus(@RequestBody Bus bus) {		
 		Bus busPersisted= busService.addOrUpdateBus(bus);
 		return busPersisted;
 	}
@@ -160,7 +158,6 @@ public class BusReservationController {
 	//http://localhost:9090/viewcustomerwhoregisteredbutwithnobooking
 	@GetMapping(value="/viewcustomerwhoregisteredbutwithnobooking")
 	public List<User> viewCustomerWhoRegisteredButwithNoBooking() {
-		// TODO Auto-generated method stub
 		return busService.viewCustomerWhoRegisteredButwithNoBooking();
 	}
 

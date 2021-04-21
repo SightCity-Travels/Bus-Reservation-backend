@@ -32,17 +32,13 @@ public class BusReservationDaoImpl implements BusReservationDao {
 
 	@Transactional
 	public User registerOrUpdateUser(User user) {
-
 		User userPersisted = em.merge(user);
-
 		return userPersisted;
 	}
 
 	@Transactional
 	public Bus addOrUpdateBus(Bus bus) {
-
 		Bus busPersisted = em.merge(bus);
-
 		return busPersisted;
 	}
 
@@ -158,6 +154,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		return users;
 
 	}
+	
 
 	public List<Object[]> frequentlyTravelledRoute() {
 
@@ -166,13 +163,12 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		List<Object[]> routes = query.getResultList();
 		return routes;
 	}
+	
 
 	public List<User> viewCustomerWhoRegisteredButwithNoBooking() {
-		String jpql = "select u from User u where u.userId not in (select t.user.userId from Ticket t)";
-
+		String jpql = "select u from User u where u.userId not in (select nvl2(t.user.userId,t.user.userId,0) from Ticket t)";
 		TypedQuery<User> query = em.createQuery(jpql, User.class);
 		List<User> user = query.getResultList();
-
 		return user;
 	}
 
