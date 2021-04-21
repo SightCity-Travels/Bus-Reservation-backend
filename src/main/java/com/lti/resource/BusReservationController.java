@@ -47,12 +47,20 @@ public class BusReservationController {
 	
 	//http://localhost:9090/addorupdatebus
 	@PostMapping(value="/addorupdatebus")
-	public Bus  addOrUpdateBus(@RequestBody Bus bus) {
+	public Bus  addBus(@RequestBody Bus bus) {
 	
-		Bus busPersisted= busService.addOrUpdateBus(bus);
+		Bus busPersisted= busService.addBus(bus);
 		return busPersisted;
 	}
 
+	@GetMapping(value="/updatebus")
+	public Bus  updateBus(@RequestParam("busId") int busId,@RequestParam("source") String source,@RequestParam("destination") String destination, @RequestParam("fare") double fare) {
+	
+		Bus busPersisted=busService.updateBus(busId, source, destination, fare);
+		return busPersisted;
+	}
+
+	
 	//http://localhost:9090/login
 	@PostMapping(value="/login")
 	public boolean login(@RequestBody LoginDto dto) {
@@ -196,7 +204,7 @@ public class BusReservationController {
 
     //http://localhost:9090/cancelticket
 	@DeleteMapping(value="/cancelticket")
-	public String cancelTicket(@RequestParam("ticketId") int ticketId) {
+	public boolean cancelTicket(@RequestParam("ticketId") int ticketId) {
 		// TODO Auto-generated method stub
 		return busService.cancelTicket(ticketId);
 	}

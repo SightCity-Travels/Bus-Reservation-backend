@@ -31,9 +31,9 @@ public class BusReservationServiceImpl implements BusReservationService {
 	}
 
 	
-	public Bus  addOrUpdateBus(Bus bus) {
+	public Bus  addBus(Bus bus) {
 		// TODO Auto-generated method stub
-		return busDao. addOrUpdateBus(bus);
+		return busDao. addBus(bus);
 	}
 
 	public boolean loginUser(int userId, String password) {
@@ -106,7 +106,7 @@ public class BusReservationServiceImpl implements BusReservationService {
 		return busDao.mostPreferredBus();
 	}
 
-	public String cancelTicket(int ticketId) {
+	public boolean cancelTicket(int ticketId) {
 		// TODO Auto-generated method stub
 		return busDao.cancelTicket(ticketId);
 	}
@@ -158,6 +158,13 @@ public class BusReservationServiceImpl implements BusReservationService {
 	public Bus getBus(int ticketId) {
 		// TODO Auto-generated method stub
 		return busDao.getBus(ticketId);
+	}
+
+
+	@Override
+	public Bus updateBus(int busId, String source, String destination, double fare) {
+		
+		return busDao.updateBus(busId, source, destination, fare);
 	}
 	 
 	  
