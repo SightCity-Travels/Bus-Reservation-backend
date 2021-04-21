@@ -46,11 +46,19 @@ public class BusReservationController {
 	
 	//http://localhost:9090/addorupdatebus
 	@PostMapping(value="/addorupdatebus")
-	public Bus  addOrUpdateBus(@RequestBody Bus bus) {		
-		Bus busPersisted= busService.addOrUpdateBus(bus);
+	public Bus  addBus(@RequestBody Bus bus) {
+		Bus busPersisted= busService.addBus(bus);
 		return busPersisted;
 	}
 
+	//http://localhost:9090/updatebus
+	@GetMapping(value="/updatebus")
+	public int  updateBus(@RequestParam("busId") int busId,@RequestParam("source") String source,@RequestParam("destination") String destination, @RequestParam("fare") double fare) {
+		int res=busService.updateBus(busId, source, destination, fare);
+		return res;
+	}
+
+	
 	//http://localhost:9090/login
 	@PostMapping(value="/login")
 	public boolean login(@RequestBody LoginDto dto) {
@@ -193,7 +201,7 @@ public class BusReservationController {
 
     //http://localhost:9090/cancelticket
 	@DeleteMapping(value="/cancelticket")
-	public String cancelTicket(@RequestParam("ticketId") int ticketId) {
+	public boolean cancelTicket(@RequestParam("ticketId") int ticketId) {
 		// TODO Auto-generated method stub
 		return busService.cancelTicket(ticketId);
 	}
@@ -222,5 +230,11 @@ public class BusReservationController {
     @GetMapping(value="finduserbyid")
     public User findUser(@RequestParam int userId) {
     	return busService.findUser(userId);
+    }
+    
+    //http://localhost:9090/bookingsbasedonperiod
+    @GetMapping(value="bookingsbasedonperiod")
+    public List<Ticket> findBookingBasedOnPeriod(@RequestParam("busId") int busId, @RequestParam("travelDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate travelDate){
+    	return busService.bookingsBasedOnPeriod(busId, travelDate);
     }
 }
