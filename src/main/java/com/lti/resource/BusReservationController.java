@@ -120,7 +120,9 @@ public class BusReservationController {
 			passengers.get(i).setTicket(ticket);
 		}
 		
-		return busService.bookATicket(ticket);
+		Ticket ticketPersisted= busService.bookATicket(ticket);
+		busService.sendEmailOnBooking(ticketPersisted);
+		return ticketPersisted;
 	}
 
 	
