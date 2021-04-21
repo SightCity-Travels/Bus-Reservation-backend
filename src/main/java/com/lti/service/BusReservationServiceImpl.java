@@ -96,7 +96,7 @@ public class BusReservationServiceImpl implements BusReservationService {
 		return busDao.ticketDetails(ticketId);
 	}
 
-	public String payThroughWallet(int userId, double amount) {
+	public boolean payThroughWallet(int userId, double amount) {
 		// TODO Auto-generated method stub
 		return busDao.payThroughWallet(userId, amount);
 	}

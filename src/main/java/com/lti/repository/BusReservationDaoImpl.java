@@ -217,17 +217,17 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	}
 
 	@Transactional
-	public String payThroughWallet(int userId, double amount) {
+	public boolean payThroughWallet(int userId, double amount) {
 
 		User user = em.find(User.class, userId);
 		if (user.getWallet() < amount) {
-			return "Insufficient amount in wallet";
+			return false;
 		} else {
 			user.setWallet(user.getWallet() - amount);
 
 			em.merge(user);
 
-			return "Payment successful";
+			return true;
 		}
 
 	}

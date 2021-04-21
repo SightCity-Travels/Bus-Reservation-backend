@@ -189,7 +189,7 @@ public class BusReservationController {
 
 	//http://localhost:9090/paythroughwallet
 	@GetMapping(value="/paythroughwallet")
-	public String payThroughWallet(@RequestParam("userId") int userId,@RequestParam("amount") double amount) {
+	public boolean payThroughWallet(@RequestParam("userId") int userId,@RequestParam("amount") double amount) {
 		// TODO Auto-generated method stub
 		return busService.payThroughWallet(userId, amount);
 	}

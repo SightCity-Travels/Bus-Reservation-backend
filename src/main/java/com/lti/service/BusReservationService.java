@@ -43,7 +43,7 @@ public interface BusReservationService {
 	
 	public Ticket ticketDetails(int ticketId); //14
 	
-	public String payThroughWallet(int userId, double amount); //15
+	public boolean payThroughWallet(int userId, double amount); //15
 	
 	public List<Integer> mostPreferredBus(); //16
 	
