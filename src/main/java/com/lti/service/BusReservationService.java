@@ -13,7 +13,7 @@ public interface BusReservationService {
 
 	public User registerOrUpdateUser(User user); //1
 
-	public Bus  addOrUpdateBus(Bus bus); //2
+//	public Bus  addOrUpdateBus(Bus bus); //2
 
 	public boolean loginUser(int userId, String password); //3
 
@@ -49,7 +49,7 @@ public interface BusReservationService {
 	
 	// public List<Ticket> bookingsBasedOnPeriod(int choice, LocalDate travelDate, int month);
 	
-	public String cancelTicket(int ticketId); //17
+	public boolean cancelTicket(int ticketId); //17
 	
 	public List<Ticket> viewTicketBookedByUserId(int userId); //18
 	
@@ -64,4 +64,9 @@ public interface BusReservationService {
 	
 	public Bus getBus(int ticketId);
 	
+	public Bus addBus(Bus bus); //2
+
+	public int updateBus(int busId, String source, String destination, double fare);
+	
+	public List<Ticket> bookingsBasedOnPeriod(int busId, LocalDate travelDate);
 }
