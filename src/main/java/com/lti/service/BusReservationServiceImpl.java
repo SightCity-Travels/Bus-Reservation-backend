@@ -25,15 +25,12 @@ public class BusReservationServiceImpl implements BusReservationService {
 	EmailService emailservice;
 	
 	public User registerOrUpdateUser(User user) {
-		
 		return busDao.registerOrUpdateUser(user);
-		
 	}
 
 	
-	public Bus  addOrUpdateBus(Bus bus) {
-		// TODO Auto-generated method stub
-		return busDao. addOrUpdateBus(bus);
+	public Bus  addBus(Bus bus) {
+		return busDao. addBus(bus);
 	}
 
 	public boolean loginUser(int userId, String password) {
@@ -41,7 +38,7 @@ public class BusReservationServiceImpl implements BusReservationService {
 		return busDao.loginUser(userId, password);
 	}
 
-	public String changePassword(int userId, String password) {
+	public boolean changePassword(int userId, String password) {
 		// TODO Auto-generated method stub
 		return busDao.changePassword(userId, password);
 	}
@@ -96,7 +93,7 @@ public class BusReservationServiceImpl implements BusReservationService {
 		return busDao.ticketDetails(ticketId);
 	}
 
-	public String payThroughWallet(int userId, double amount) {
+	public boolean payThroughWallet(int userId, double amount) {
 		// TODO Auto-generated method stub
 		return busDao.payThroughWallet(userId, amount);
 	}
@@ -106,7 +103,7 @@ public class BusReservationServiceImpl implements BusReservationService {
 		return busDao.mostPreferredBus();
 	}
 
-	public String cancelTicket(int ticketId) {
+	public boolean cancelTicket(int ticketId) {
 		// TODO Auto-generated method stub
 		return busDao.cancelTicket(ticketId);
 	}
@@ -118,7 +115,6 @@ public class BusReservationServiceImpl implements BusReservationService {
 
 	@Override
 	public User findUser(int userId) {
-		
 		return busDao.findUser(userId);
 	}
 
@@ -172,13 +168,20 @@ public class BusReservationServiceImpl implements BusReservationService {
 		return busDao.getPassenger(ticketId);
 	}
 
-
 	@Override
 	public Bus getBus(int ticketId) {
 		// TODO Auto-generated method stub
 		return busDao.getBus(ticketId);
 	}
-	 
-	  
-	 
+
+	@Override
+	public int updateBus(int busId, String source, String destination, double fare) {
+		
+		return busDao.updateBus(busId, source, destination, fare);
+	}
+
+	@Override
+	public List<Ticket> bookingsBasedOnPeriod(int busId, LocalDate travelDate) {
+		return busDao.bookingsBasedOnPeriod(busId, travelDate);
+	}
 }

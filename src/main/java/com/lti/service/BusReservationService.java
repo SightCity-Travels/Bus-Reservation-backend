@@ -13,13 +13,13 @@ public interface BusReservationService {
 
 	public User registerOrUpdateUser(User user); //1
 
-	public Bus  addOrUpdateBus(Bus bus); //2
+//	public Bus  addOrUpdateBus(Bus bus); //2
 
 	public boolean loginUser(int userId, String password); //3
 
 //	public Passenger addOrUpdatePassenger(Passenger passenger);
 
-	public String changePassword(int userId, String password); //4
+	public boolean changePassword(int userId, String password); //4
 
 	public Ticket bookATicket(Ticket ticket); //5
 
@@ -43,24 +43,30 @@ public interface BusReservationService {
 	
 	public Ticket ticketDetails(int ticketId); //14
 	
-	public String payThroughWallet(int userId, double amount); //15
+	public boolean payThroughWallet(int userId, double amount); //15
 	
 	public List<Integer> mostPreferredBus(); //16
 	
 	// public List<Ticket> bookingsBasedOnPeriod(int choice, LocalDate travelDate, int month);
 	
-	public String cancelTicket(int ticketId); //17
+	public boolean cancelTicket(int ticketId); //17
 	
 	public List<Ticket> viewTicketBookedByUserId(int userId); //18
 	
 	public User findUser(int userId);
 	
 	public Boolean loginAdmin(int adminId, String password);
-	
+
 	public void sendEmail(User user);
+
 	
 	public List<Passenger> getPassenger(int ticketId);
 	
 	public Bus getBus(int ticketId);
 	
+	public Bus addBus(Bus bus); //2
+
+	public int updateBus(int busId, String source, String destination, double fare);
+	
+	public List<Ticket> bookingsBasedOnPeriod(int busId, LocalDate travelDate);
 }

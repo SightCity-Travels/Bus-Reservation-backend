@@ -38,23 +38,36 @@ public class BusReservationController {
 	//http://localhost:9090/registerorupdateuser
 	@PostMapping(value="/registerorupdateuser")
 	public User registerOrUpdateUser(@RequestBody User user) {
-      
 		User userPersisted =  busService.registerOrUpdateUser(user);
 		//busService.sendEmail(userPersisted);
 //		busService.sendEmail(userPersisted);
+
+
+		//busService.sendEmail(userPersisted);
+
+//		busService.sendEmail(userPersisted);
+
 	    busService.sendEmail(userPersisted);
+
 		return userPersisted;
 		
 	}
 	
 	//http://localhost:9090/addorupdatebus
 	@PostMapping(value="/addorupdatebus")
-	public Bus  addOrUpdateBus(@RequestBody Bus bus) {
-	
-		Bus busPersisted= busService.addOrUpdateBus(bus);
+	public Bus  addBus(@RequestBody Bus bus) {
+		Bus busPersisted= busService.addBus(bus);
 		return busPersisted;
 	}
 
+	//http://localhost:9090/updatebus
+	@GetMapping(value="/updatebus")
+	public int  updateBus(@RequestParam("busId") int busId,@RequestParam("source") String source,@RequestParam("destination") String destination, @RequestParam("fare") double fare) {
+		int res=busService.updateBus(busId, source, destination, fare);
+		return res;
+	}
+
+	
 	//http://localhost:9090/login
 	@PostMapping(value="/login")
 	public boolean login(@RequestBody LoginDto dto) {
@@ -67,7 +80,7 @@ public class BusReservationController {
 		return userPersisted;
 	}
 	
-	//http://localhost:8080/loginadmin
+	//http://localhost:9090/loginadmin
 	@PostMapping(value="/loginadmin")
 	public Boolean loginAdmin(@RequestBody LoginDto dto) {
 			
@@ -79,12 +92,13 @@ public class BusReservationController {
 	
 	//http://localhost:9090/changepassword
 	@PutMapping(value="/changepassword")
-	public String changePassword(@RequestBody ChangePasswordDto dto) {
+	public boolean changePassword(@RequestBody ChangePasswordDto dto) {
 		
-		String result = busService.changePassword(dto.getUserId(),dto.getPassword());
-		 return result; 
-		 
+		boolean result = busService.changePassword(dto.getUserId(),dto.getPassword());
+		 return result;  
 	}
+	
+	
 
 	//http://localhost:9090/bookaticket
 	@PostMapping(value="/bookaticket")
@@ -119,7 +133,7 @@ public class BusReservationController {
 		return busService.searchBus(source, destination);
 	}
 
-	
+
 	
 	@GetMapping(value="/getbusbyid")
 	  public Bus chooseBus(@RequestParam("busId") int busId) { 
@@ -161,13 +175,12 @@ public class BusReservationController {
 	//http://localhost:9090/viewcustomerwhoregisteredbutwithnobooking
 	@GetMapping(value="/viewcustomerwhoregisteredbutwithnobooking")
 	public List<User> viewCustomerWhoRegisteredButwithNoBooking() {
-		// TODO Auto-generated method stub
 		return busService.viewCustomerWhoRegisteredButwithNoBooking();
 	}
 
 	
 	//http://localhost:9090/rechargeWallet
-	@PutMapping(value="/rechargeWallet")
+	@GetMapping(value="/rechargeWallet")
 	public User rechargeWallet(@RequestParam("userId") int userId,@RequestParam("rechargeAmount") int rechargeAmount) {
 		// TODO Auto-generated method stub
 		return busService.rechargeWallet(userId, rechargeAmount);
@@ -183,7 +196,7 @@ public class BusReservationController {
 
 	//http://localhost:9090/paythroughwallet
 	@GetMapping(value="/paythroughwallet")
-	public String payThroughWallet(@RequestParam("userId") int userId,@RequestParam("amount") double amount) {
+	public boolean payThroughWallet(@RequestParam("userId") int userId,@RequestParam("amount") double amount) {
 		// TODO Auto-generated method stub
 		return busService.payThroughWallet(userId, amount);
 	}
@@ -197,7 +210,7 @@ public class BusReservationController {
 
     //http://localhost:9090/cancelticket
 	@DeleteMapping(value="/cancelticket")
-	public String cancelTicket(@RequestParam("ticketId") int ticketId) {
+	public boolean cancelTicket(@RequestParam("ticketId") int ticketId) {
 		// TODO Auto-generated method stub
 		return busService.cancelTicket(ticketId);
 	}
@@ -209,6 +222,7 @@ public class BusReservationController {
 		return busService.viewTicketBookedByUserId(userId);
 	}
 	
+	
 	//http://localhost:9090/getPassengerList
     @GetMapping(value="/getPassengerList")
 	public List<Passenger> getPassengerList(@RequestParam("ticketId") int ticketId){
@@ -219,5 +233,17 @@ public class BusReservationController {
     @GetMapping(value="/getBusByTicketId")
     public Bus getBusByTicketId(@RequestParam("ticketId") int ticketId) {
     	return busService.getBus(ticketId);
+    }
+    
+  //http://localhost:9090/finduserbyid
+    @GetMapping(value="finduserbyid")
+    public User findUser(@RequestParam int userId) {
+    	return busService.findUser(userId);
+    }
+    
+    //http://localhost:9090/bookingsbasedonperiod
+    @GetMapping(value="bookingsbasedonperiod")
+    public List<Ticket> findBookingBasedOnPeriod(@RequestParam("busId") int busId, @RequestParam("travelDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate travelDate){
+    	return busService.bookingsBasedOnPeriod(busId, travelDate);
     }
 }

@@ -32,17 +32,13 @@ public class BusReservationDaoImpl implements BusReservationDao {
 
 	@Transactional
 	public User registerOrUpdateUser(User user) {
-
 		User userPersisted = em.merge(user);
-
 		return userPersisted;
 	}
 
 	@Transactional
-	public Bus addOrUpdateBus(Bus bus) {
-
+	public Bus addBus(Bus bus) {
 		Bus busPersisted = em.merge(bus);
-
 		return busPersisted;
 	}
 
@@ -58,6 +54,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 			user = query.getSingleResult();
 
 		} catch (Exception e) {
+		
 
 		}
 		if (user == null) {
@@ -74,7 +71,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	 */
 
 	@Transactional
-	public String changePassword(int userId, String password) {
+	public boolean changePassword(int userId, String password) {
 		String jpql = "select u from User u where u.userId=:uId";
 		TypedQuery<User> query = em.createQuery(jpql, User.class);
 		query.setParameter("uId", userId);
@@ -88,13 +85,13 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		} catch (Exception e) {
 		}
 		if (user == null) {
-			return "User not found";
+			return false;
 		}
-		return "Password set successfully for the user";
+		return true;
 	}
 
 	@Transactional
-	public Ticket bookATicket(Ticket ticket) {
+	public Ticket bookATicket(Ticket ticket) { //remaining
 
 		Ticket persistedTicket = em.merge(ticket);
 		/*
@@ -110,7 +107,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		return persistedTicket;
 
 	}
-
+	
 	public List<Bus> searchBus(String source, String destination) {
 		String jpql = " select b from Bus b where b.source=:s and b.destination=:d";
 
@@ -120,7 +117,8 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		List<Bus> bus = query.getResultList();
 		return bus;
 	}
-
+	
+	
 	public Bus chooseBus(int busId) {
 		String jpql = "select b from Bus b where b.busId=:bid";
 		TypedQuery<Bus> query = em.createQuery(jpql, Bus.class);
@@ -130,7 +128,9 @@ public class BusReservationDaoImpl implements BusReservationDao {
 
 	}
 
+
 	public List<String> fetchBookedSeats(LocalDate travelDate, int busId) {
+
 
 		String jpql = "select p.seatNo from Passenger p where p.ticket.travelDate=:tvlDate and p.ticket.bus.busId=:bId";
 		TypedQuery<String> query = em.createQuery(jpql, String.class);
@@ -158,6 +158,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		return users;
 
 	}
+	
 
 	public List<Object[]> frequentlyTravelledRoute() {
 
@@ -166,13 +167,12 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		List<Object[]> routes = query.getResultList();
 		return routes;
 	}
+	
 
 	public List<User> viewCustomerWhoRegisteredButwithNoBooking() {
-		String jpql = "select u from User u where u.userId not in (select t.user.userId from Ticket t)";
-
+		String jpql = "select u from User u where u.userId not in (select nvl2(t.user.userId,t.user.userId,0) from Ticket t)";
 		TypedQuery<User> query = em.createQuery(jpql, User.class);
 		List<User> user = query.getResultList();
-
 		return user;
 	}
 
@@ -192,7 +192,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	 */
 
 	@Transactional
-	public User rechargeWallet(int userId, int rechargeAmount) {
+	public User rechargeWallet(int userId, int rechargeAmount) { 
 		User user = em.find(User.class, userId);
 		user.setWallet(user.getWallet() + rechargeAmount);
 
@@ -203,8 +203,9 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	}
 
 	public Ticket ticketDetails(int ticketId) {
-		//String jpql = "select t , p from Ticket t , Passenger p where t.ticketId=:tid and p.ticket.ticketId=:tid";
-		String jpql="select t from Ticket t where t.ticketId=:tid";
+		// String jpql = "select t , p from Ticket t , Passenger p where t.ticketId=:tid
+		// and p.ticket.ticketId=:tid";
+		String jpql = "select t from Ticket t where t.ticketId=:tid";
 		TypedQuery<Ticket> query = em.createQuery(jpql, Ticket.class);
 		query.setParameter("tid", ticketId);
 		Ticket ticketdetails = query.getSingleResult();
@@ -213,17 +214,17 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	}
 
 	@Transactional
-	public String payThroughWallet(int userId, double amount) {
+	public boolean payThroughWallet(int userId, double amount) {
 
 		User user = em.find(User.class, userId);
 		if (user.getWallet() < amount) {
-			return "Insufficient amount in wallet";
+			return false;
 		} else {
 			user.setWallet(user.getWallet() - amount);
 
 			em.merge(user);
 
-			return "Payment successful";
+			return true;
 		}
 
 	}
@@ -237,7 +238,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		return tickets;
 	}
 
-	public List<Ticket> bookingsBasedOnPeriod(int choice, LocalDate travelDate, int month) {
+	public List<Ticket> bookingsBasedOnPeriod(int choice, LocalDate travelDate, int month) { 
 		if (choice == 1) {
 			String jpql = "select t from Ticket t where t.travelDate=:td";
 		} else if (choice == 2) {
@@ -248,18 +249,19 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	}
 
 	@Transactional
-	public String cancelTicket(int ticketId) {
+	public boolean cancelTicket(int ticketId) {
+		if(ticketId > 0) {
 		Ticket ticket = em.find(Ticket.class, ticketId);
-		if (ticket.getStatus() == Status.CANCELLED) {
-			return "You cannot cancel this ticket, it is already cancelled";
-		} else {
+		//if (ticket.getStatus() == Status.BOOKED) {
+//			return false;
+//		} else {
 			ticket.setStatus(Status.CANCELLED);
 			double refund = ticket.getTotalAmount();
-			try {
-				ticket.getUser().setWallet(ticket.getUser().getWallet() + refund);
-			} catch (Exception e) {
-				return "You need to register to cancel your ticket";
-			}
+//			try {
+			ticket.getUser().setWallet(ticket.getUser().getWallet() + refund);
+//			} catch (Exception e) {
+			// return false;
+//			}
 
 			em.merge(ticket);
 
@@ -268,10 +270,13 @@ public class BusReservationDaoImpl implements BusReservationDao {
 			query.setParameter("tid", ticketId);
 
 			query.executeUpdate();
-
+			return true;
+		}else {
+			return false;
 		}
+		//}
 
-		return "Ticket Cancelled Successfully";
+	//	return false;
 
 	}
 
@@ -296,15 +301,11 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		return user;
 	}
 
-	@Override
 	public Boolean loginAdmin(int adminId, String password) {
 		String jpql1 = "select a from Admin a where a.adminId=:id and a.password=:pass";
-
 		TypedQuery<Admin> query = em.createQuery(jpql1, Admin.class);
-
 		query.setParameter("id", adminId);
 		query.setParameter("pass", password);
-
 		Admin admin = null;
 		try {
 			admin = query.getSingleResult();
@@ -313,11 +314,9 @@ public class BusReservationDaoImpl implements BusReservationDao {
 
 		}
 		if (admin == null) {
-
 			return false;
 		}
 		return true;
-
 	}
 
 	@Override
@@ -338,13 +337,35 @@ public class BusReservationDaoImpl implements BusReservationDao {
 
 	@Override
 	public Bus getBus(int ticketId) {
-		String jpql="select b from Bus b where b.busId =(select t.bus.busId from Ticket t where t.ticketId=:tid)";
+		String jpql = "select b from Bus b where b.busId =(select t.bus.busId from Ticket t where t.ticketId=:tid)";
 		TypedQuery<Bus> query = em.createQuery(jpql, Bus.class);
 		query.setParameter("tid", ticketId);
 		Bus getBus = query.getSingleResult();
-		
+
 		return getBus;
-		
+
+	}
+
+	@Transactional
+	public int updateBus(int busId, String source, String destination, double fare) {
+		String jpql = "update Bus b set b.source=:s, b.destination=:d , b.fare=:f where b.busId=:bid";
+		Query query = em.createQuery(jpql);
+		query.setParameter("bid", busId);
+		query.setParameter("s", source);
+		query.setParameter("d", destination);
+		query.setParameter("f", fare);
+		int res=query.executeUpdate();
+		return res;
+	}
+
+	@Override
+	public List<Ticket> bookingsBasedOnPeriod(int busId, LocalDate travelDate) {
+		String jpql="select t from Ticket t where t.bus.busId=:bid and t.travelDate=:td";
+		TypedQuery<Ticket> query = em.createQuery(jpql,Ticket.class);
+		query.setParameter("bid",busId);
+		query.setParameter("td", travelDate);
+		List<Ticket> tickets = query.getResultList();
+		return tickets;
 	}
 
 }

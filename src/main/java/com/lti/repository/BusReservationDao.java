@@ -13,13 +13,15 @@ public interface BusReservationDao {
 
 	public User registerOrUpdateUser(User user); //1
 
-	public Bus addOrUpdateBus(Bus bus); //2
+	public Bus addBus(Bus bus); //2
 
+	public int updateBus(int busId, String source, String destination, double fare);
+	
 	public boolean loginUser(int userId, String password); //3
 
 //	public Passenger addOrUpdatePassenger(Passenger passenger);
 
-	public String changePassword(int userId, String password); //4
+	public boolean changePassword(int userId, String password); //4
 
 	public Ticket bookATicket(Ticket ticket); //5
 
@@ -37,19 +39,18 @@ public interface BusReservationDao {
 	
 	public List<User> viewCustomerWhoRegisteredButwithNoBooking(); //12
 	
-//  public Bus updateRoute(int busId, String source, String destination);
 	
 	public User rechargeWallet(int userId,int rechargeAmount); //13
 	
 	public Ticket ticketDetails(int ticketId); //14
 	
-	public String payThroughWallet(int userId, double amount); //15
+	public boolean payThroughWallet(int userId, double amount); //15
 	
 	public List<Integer> mostPreferredBus(); //16
 	
-	// public List<Ticket> bookingsBasedOnPeriod(int choice, LocalDate travelDate, int month);
+	 public List<Ticket> bookingsBasedOnPeriod(int busId, LocalDate travelDate);
 	
-	public String cancelTicket(int ticketId); //17
+	public boolean cancelTicket(int ticketId); //17
 	
 	public List<Ticket> viewTicketBookedByUserId(int userId); //18
 	
