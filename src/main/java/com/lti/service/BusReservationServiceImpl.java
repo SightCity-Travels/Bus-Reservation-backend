@@ -145,14 +145,15 @@ public class BusReservationServiceImpl implements BusReservationService {
 
 	
 	
-	  @Override public void sendEmail(User user) {
-	//  if(!busDao.isCustomerPresent(user.getEmail())) { 
-		  User user1 = null;
-	  user1=busDao.registerOrUpdateUser(user); 
+	  @Override 
+	  public void sendEmail(User user) {
+	
 	  String subject
-	  ="Registration confirmation"; String text = "Hi "+user.getFirstName()+" " +
-	  " You have been Successfully registered. "+"Your userId is "+user.getUserId()
-	  +". "+"Please use this to login";
+	  ="Registration confirmation"; 
+	  
+	  String text = "Hi "+user.getFirstName()+"\n " +
+	  " You have been Successfully registered. \n"+"Your userId is "+user.getUserId()
+	  +".\n "+"Please use this to login";
 	  emailservice.sendEmailForNewRegistration(user.getEmail(),text,subject);
 	  System.out.println("Mail sent");
 	  
@@ -183,5 +184,32 @@ public class BusReservationServiceImpl implements BusReservationService {
 	@Override
 	public List<Ticket> bookingsBasedOnPeriod(int busId, LocalDate travelDate) {
 		return busDao.bookingsBasedOnPeriod(busId, travelDate);
+	}
+
+
+	@Override
+	public void sendEmailOnBooking(Ticket ticket) {
+		
+		  String subject
+		  ="Ticket confirmation"; 
+		  
+		  StringBuffer text = new StringBuffer();
+		  text.append("Hi "+ticket.getUser().getFirstName()+".\n "+
+		  "Your ticket has been successfully booked.\n"+
+		  "Your Ticket Id is "+ticket.getTicketId()
+		  +".\n "+
+		  "Source : "+ticket.getBus().getSource()+ " Destination : "+ticket.getBus().getDestination()+"\n"+
+		  "Departure Time : "+ticket.getBus().getTimeOfDeparture()+" Arrival Time : "+ticket.getBus().getTimeOfArrival()+"\n");
+		 
+		  for(int i=0;i<ticket.getNoOfPassengers();i++) {
+		   text.append("Passenger Name : "+ticket.getPassengers().get(i).getPassengerName()+ " Passenger SeatNo : "
+		  +ticket.getPassengers().get(i).getSeatNo()+ "\n");  
+		  }
+		  
+		  text.append("Total Amount : "+ticket.getTotalAmount());
+		  
+		  emailservice.sendEmailForBooking(ticket.getEmail(),text,subject);
+		  System.out.println("Mail sent");
+		
 	}
 }

@@ -19,4 +19,14 @@ public class EmailService {
 		mailSender.send(message);
 
 	}
+	
+	public void sendEmailForBooking(String email,StringBuffer text,String subject) {
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("sightcitytravelspvt@gmail.com");
+		message.setTo(email);
+		message.setSubject(subject);
+		message.setText(text.toString());
+		mailSender.send(message);
+
+	}
 }

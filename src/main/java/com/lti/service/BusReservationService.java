@@ -69,4 +69,8 @@ public interface BusReservationService {
 	public int updateBus(int busId, String source, String destination, double fare);
 	
 	public List<Ticket> bookingsBasedOnPeriod(int busId, LocalDate travelDate);
+	
+	public void sendEmailOnBooking(Ticket ticket);
+	
+	
 }
