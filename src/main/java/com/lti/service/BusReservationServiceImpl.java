@@ -215,4 +215,22 @@ public class BusReservationServiceImpl implements BusReservationService {
 		  return true;
 		
 	}
+
+
+	@Override
+	public User forgotPassword(int userId, String email) {
+		
+		return busDao.forgotPassword(userId, email);	
+	}
+	
+	@Override
+	public void sendEmailOnForgetPassword(User user) {
+		
+		String subject="Please click on the link given below to reset the password.";
+		
+		
+		String text="Your reset password link : "+"http://localhost:4200/forgotLink";
+		emailservice.sendEmailForForgetPassword(user.getEmail(),subject,text);
+		  System.out.println("Mail sent");
+	}
 }

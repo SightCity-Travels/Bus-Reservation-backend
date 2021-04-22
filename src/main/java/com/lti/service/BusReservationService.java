@@ -14,6 +14,10 @@ public interface BusReservationService {
 	public User registerOrUpdateUser(User user); //1
 
 //	public Bus  addOrUpdateBus(Bus bus); //2
+	
+	public User forgotPassword(int userId, String email); //4
+
+	public void sendEmailOnForgetPassword(User user);
 
 	public boolean loginUser(int userId, String password); //3
 
@@ -59,6 +63,7 @@ public interface BusReservationService {
 
 	public void sendEmail(User user);
 
+	
 	
 	public List<Passenger> getPassenger(int ticketId);
 	
