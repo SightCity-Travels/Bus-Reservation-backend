@@ -22,6 +22,9 @@ public interface BusReservationDao {
 //	public Passenger addOrUpdatePassenger(Passenger passenger);
 
 	public boolean changePassword(int userId, String password); //4
+	
+	//public boolean forgotPassword(int userId, String ); //4
+
 
 	public Ticket bookATicket(Ticket ticket); //5
 
