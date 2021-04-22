@@ -170,7 +170,8 @@ public class BusReservationServiceImpl implements BusReservationService {
 
 
 	@Override
-	public void sendEmailOnBooking(Ticket ticket) {
+	public boolean sendEmailOnBooking(Ticket ticket) {
+		
 		
 		  String subject
 		  ="Ticket confirmation"; 
@@ -191,7 +192,9 @@ public class BusReservationServiceImpl implements BusReservationService {
 		  text.append("Total Amount : "+ticket.getTotalAmount());
 		  
 		  emailservice.sendEmailForBooking(ticket.getEmail(),text,subject);
+		  
 		  System.out.println("Mail sent");
+		  return true;
 		
 	}
 }

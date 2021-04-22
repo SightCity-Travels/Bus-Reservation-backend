@@ -70,7 +70,7 @@ public interface BusReservationService {
 	
 	public List<Ticket> bookingsBasedOnPeriod(int busId, LocalDate travelDate);
 	
-	public void sendEmailOnBooking(Ticket ticket);
+	public boolean sendEmailOnBooking(Ticket ticket);
 	
 	
 }
