@@ -108,6 +108,8 @@ public class BusReservationDaoImpl implements BusReservationDao {
 
 	}
 	
+	
+	
 	public List<Bus> searchBus(String source, String destination) {
 		String jpql = " select b from Bus b where b.source=:s and b.destination=:d";
 
@@ -368,4 +370,5 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		return tickets;
 	}
 
+	
 }

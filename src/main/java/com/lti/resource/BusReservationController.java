@@ -122,11 +122,21 @@ public class BusReservationController {
 			passengers.get(i).setTicket(ticket);
 		}
 		
-		Ticket ticketPersisted= busService.bookATicket(ticket);
-		busService.sendEmailOnBooking(ticketPersisted);
-		return ticketPersisted;
+		//Ticket ticketPersisted= busService.bookATicket(ticket);
+		 return busService.bookATicket(ticket);
+	//	busService.sendEmailOnBooking(ticketPersisted);
+	//	success(ticket);
+		
 	}
 
+	
+	@GetMapping(value = "/sendEmail")
+	public boolean success(@RequestParam("ticketId") int ticketId) {
+		Ticket ticket1 = busService.ticketDetails(ticketId);
+		
+		boolean result = busService.sendEmailOnBooking(ticket1);
+         return result;
+	}
 	
 	//http://localhost:9090/searchbus
 	@GetMapping(value="/searchbus")
