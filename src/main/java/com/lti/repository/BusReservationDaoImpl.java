@@ -371,6 +371,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	}
 
 	@Override
+
 	public boolean setTicketForUser(int ticketId, int userId) {
 		Ticket ticket = em.find(Ticket.class, ticketId);
 		User user = em.find(User.class, userId);
@@ -386,6 +387,19 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	     }
 		
 		return true;
+	}
+	public User forgotPassword(int userId, String email) {
+		String jpql = "select u from User u where u.userId=:id and u.email=:Email";
+
+		TypedQuery<User> query = em.createQuery(jpql, User.class);
+
+		query.setParameter("id", userId);
+		query.setParameter("Email", email);
+		User user = query.getSingleResult();
+
+		
+		return user;		
+
 	}
 
 	

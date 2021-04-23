@@ -21,6 +21,7 @@ import com.lti.entity.BookTicket;
 import com.lti.entity.Bus;
 import com.lti.entity.ChangePasswordDto;
 import com.lti.entity.LoginDto;
+import com.lti.entity.LoginForgetDto;
 import com.lti.entity.Passenger;
 import com.lti.entity.Ticket;
 
@@ -39,13 +40,15 @@ public class BusReservationController {
 	@PostMapping(value="/registerorupdateuser")
 	public User registerOrUpdateUser(@RequestBody User user) {
 		User userPersisted =  busService.registerOrUpdateUser(user);
+		//busService.sendEmail(userPersisted);
+//		busService.sendEmail(userPersisted);
 
 
 		//busService.sendEmail(userPersisted);
 
 //		busService.sendEmail(userPersisted);
 
-	    busService.sendEmail(userPersisted);
+	    //busService.sendEmail(userPersisted);
 
 		return userPersisted;
 		
@@ -257,9 +260,25 @@ public class BusReservationController {
     	return busService.bookingsBasedOnPeriod(busId, travelDate);
     }
     
+
     
     @PostMapping(value = "setTicketByUser")
     public boolean setTicketByUser(@RequestParam("ticketId") int ticketId, @RequestParam("userId") int userId) {
     	return busService.setTicketForUser(ticketId, userId);
     }
+
+  //http://localhost:9090/loginforgetpassword
+  	@PostMapping(value="/loginforgetpassword")
+  	public User loginForgetPassword(@RequestBody LoginForgetDto dto1) {
+  		
+  		User loginPersisted=busService.forgotPassword(dto1.getId(), dto1.getEmail());
+  		
+  		busService.sendEmailOnForgetPassword(loginPersisted);
+  		return loginPersisted;
+  	}
+  	
+    
+    
+    
+
 }

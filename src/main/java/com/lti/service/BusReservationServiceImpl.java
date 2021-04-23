@@ -125,6 +125,24 @@ public class BusReservationServiceImpl implements BusReservationService {
 	}
 
 
+	//	@Override
+//	public void sendEmail(User user) {
+//		if(!busDao.isCustomerPresent(user.getEmail())) {
+//			User user1 = null;
+//			user1=busDao.registerOrUpdateUser(user);
+//			String subject = "Registration confirmation";
+//			String text = "Hi "+user.getFirstName()+" "
+//					+ " You have been Successfully registered. "+"Your userId is "+user.getUserId()+". "+"Please use this to login";
+//			emailservice.sendEmailForNewRegistration(user.getEmail(),text,subject);
+//			System.out.println("Mail sent");
+//		
+//			
+//		}
+//		else
+//			throw new CustomerServiceException("Customer already registered!");
+//		
+//	}
+
 	
 	
 	  @Override 
@@ -200,8 +218,27 @@ public class BusReservationServiceImpl implements BusReservationService {
 
 
 	@Override
+
 	public boolean setTicketForUser(int ticketId, int userId) {
 		
 		return busDao.setTicketForUser(ticketId, userId);
+	}
+	
+
+	public User forgotPassword(int userId, String email) {
+		
+		return busDao.forgotPassword(userId, email);	
+	}
+	
+	@Override
+	public void sendEmailOnForgetPassword(User user) {
+		
+		String subject="Please click on the link given below to reset the password.";
+		
+		
+		String text="Your reset password link : "+"http://localhost:4200/forgotLink";
+		emailservice.sendEmailForForgetPassword(user.getEmail(),subject,text);
+		  System.out.println("Mail sent");
+
 	}
 }

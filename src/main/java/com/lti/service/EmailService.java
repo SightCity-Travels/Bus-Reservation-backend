@@ -29,4 +29,14 @@ public class EmailService {
 		mailSender.send(message);
 
 	}
+	
+	public void sendEmailForForgetPassword(String email,String subject,String text) {
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("sightcitytravelspvt@gmail.com");
+		message.setTo(email);
+		message.setSubject(subject);
+		message.setText(text);
+		mailSender.send(message);
+
+	}
 }
