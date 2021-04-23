@@ -256,4 +256,10 @@ public class BusReservationController {
     public List<Ticket> findBookingBasedOnPeriod(@RequestParam("busId") int busId, @RequestParam("travelDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate travelDate){
     	return busService.bookingsBasedOnPeriod(busId, travelDate);
     }
+    
+    
+    @PostMapping(value = "setTicketByUser")
+    public boolean setTicketByUser(@RequestParam("ticketId") int ticketId, @RequestParam("userId") int userId) {
+    	return busService.setTicketForUser(ticketId, userId);
+    }
 }

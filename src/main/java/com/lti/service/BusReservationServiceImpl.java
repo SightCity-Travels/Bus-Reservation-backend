@@ -197,4 +197,11 @@ public class BusReservationServiceImpl implements BusReservationService {
 		  return true;
 		
 	}
+
+
+	@Override
+	public boolean setTicketForUser(int ticketId, int userId) {
+		
+		return busDao.setTicketForUser(ticketId, userId);
+	}
 }

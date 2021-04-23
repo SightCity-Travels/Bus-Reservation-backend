@@ -370,5 +370,23 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		return tickets;
 	}
 
+	@Override
+	public boolean setTicketForUser(int ticketId, int userId) {
+		Ticket ticket = em.find(Ticket.class, ticketId);
+		User user = em.find(User.class, userId);
+		ticket.setUser(user);
+		String jpql = "select t from Ticket t where t.ticketId=:tid";
+		TypedQuery<Ticket> query = em.createQuery(jpql, Ticket.class);
+		query.setParameter("tid", ticketId);
+		List<Ticket> tickets = query.getResultList();
+		user.setTickets(tickets);
+
+	     if(ticket.getUser().getUserId() == 0) {
+	    	 return false;
+	     }
+		
+		return true;
+	}
+
 	
 }

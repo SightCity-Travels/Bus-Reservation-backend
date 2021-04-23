@@ -72,5 +72,7 @@ public interface BusReservationService {
 	
 	public boolean sendEmailOnBooking(Ticket ticket);
 	
+	public boolean setTicketForUser(int ticketId, int userId);
+	
 	
 }
