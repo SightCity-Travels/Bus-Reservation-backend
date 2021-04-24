@@ -79,5 +79,9 @@ public interface BusReservationService {
 	
 	public boolean setTicketForUser(int ticketId, int userId);
 	
+
+	public Ticket rescheduleTicket(int ticketId, LocalDate travelDate, List<String> seats);
+	
+	
 	
 }

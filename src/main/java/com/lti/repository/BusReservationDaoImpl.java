@@ -402,5 +402,28 @@ public class BusReservationDaoImpl implements BusReservationDao {
 
 	}
 
+	@Transactional
+	public Ticket rescheduleTicket(int ticketId, LocalDate travelDate, List<String> seats) {
+		
+		Ticket ticket = em.find(Ticket.class, ticketId);
+		ticket.setTravelDate(travelDate);
+		
+	
+		   List<Passenger> passengerList = ticket.getPassengers();
+			for(int i=0; i<ticket.getNoOfPassengers();i++) {
+				
+				passengerList.get(i).setSeatNo(seats.get(i));
+				
+		}
+			em.merge(ticket);
+			for(int i=0; i<ticket.getNoOfPassengers();i++) {
+			em.merge(passengerList.get(i));
+			}
+			
+		return ticket;
+	}
+
+
+
 	
 }

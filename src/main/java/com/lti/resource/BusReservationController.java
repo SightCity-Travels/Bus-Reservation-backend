@@ -277,7 +277,13 @@ public class BusReservationController {
   		return loginPersisted;
   	}
   	
-    
+    //http://localhost:9090/reschedule
+  	@PutMapping(value = "reschedule")
+  	public Ticket reschedule(@RequestParam("ticketId") int ticketId, @RequestParam("travelDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate travelDate,
+  			@RequestBody List<String> seats) {
+  		
+  		return busService.rescheduleTicket(ticketId, travelDate, seats);
+  	}
     
     
 

@@ -241,4 +241,14 @@ public class BusReservationServiceImpl implements BusReservationService {
 		  System.out.println("Mail sent");
 
 	}
+
+
+	@Override
+	public Ticket rescheduleTicket(int ticketId, LocalDate travelDate, List<String> seats) {
+		// TODO Auto-generated method stub
+		return busDao.rescheduleTicket(ticketId, travelDate, seats);
+	}
+
+
+	
 }
