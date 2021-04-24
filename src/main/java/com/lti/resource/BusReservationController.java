@@ -41,15 +41,6 @@ public class BusReservationController {
 	public User registerOrUpdateUser(@RequestBody User user) {
 		User userPersisted =  busService.registerOrUpdateUser(user);
 		//busService.sendEmail(userPersisted);
-//		busService.sendEmail(userPersisted);
-
-
-		//busService.sendEmail(userPersisted);
-
-//		busService.sendEmail(userPersisted);
-
-	    //busService.sendEmail(userPersisted);
-
 		return userPersisted;
 		
 	}
@@ -128,6 +119,24 @@ public class BusReservationController {
 	//	busService.sendEmailOnBooking(ticketPersisted);
 	//	success(ticket);
 		
+	}
+	
+	//http://localhost:9090/addtickettouser
+	@GetMapping(value="addtickettouser")
+	public Ticket addTicketToUserId(@RequestParam("ticketId") int ticketId,@RequestParam("userId") int userId) {
+		Ticket ticket1 = busService.ticketDetails(ticketId);
+		User user1 = busService.findUser(userId);
+		ticket1.setUser(user1);
+		Ticket ticketPersisted = busService.setTicketForUser(ticket1);
+		return ticketPersisted;
+	}
+	
+	//http://localhost:9090/sendmailonregistration
+	@GetMapping(value="/sendmailonregistration")
+	public boolean successRegistration(@RequestParam int userId) {
+		User user = busService.findUser(userId);
+		 busService.sendEmailOnRegistration(user);	
+		 return true;
 	}
 
 	
@@ -262,10 +271,7 @@ public class BusReservationController {
     
 
     
-    @PostMapping(value = "setTicketByUser")
-    public boolean setTicketByUser(@RequestParam("ticketId") int ticketId, @RequestParam("userId") int userId) {
-    	return busService.setTicketForUser(ticketId, userId);
-    }
+   
 
   //http://localhost:9090/loginforgetpassword
   	@PostMapping(value="/loginforgetpassword")

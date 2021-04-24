@@ -60,10 +60,6 @@ public interface BusReservationService {
 	public User findUser(int userId);
 	
 	public Boolean loginAdmin(int adminId, String password);
-
-	public void sendEmail(User user);
-
-	
 	
 	public List<Passenger> getPassenger(int ticketId);
 	
@@ -77,7 +73,11 @@ public interface BusReservationService {
 	
 	public boolean sendEmailOnBooking(Ticket ticket);
 	
-	public boolean setTicketForUser(int ticketId, int userId);
+	public void sendEmailOnRegistration(User user);
+	
+	public Ticket setTicketForUser(Ticket ticket);
+	
+	
 	
 
 	public Ticket rescheduleTicket(int ticketId, LocalDate travelDate, List<String> seats);
