@@ -67,7 +67,7 @@ public interface BusReservationDao {
 	
 	public Bus getBus(int ticketId);
 	
-	public boolean setTicketForUser(int ticketId, int userId);
+	public Ticket setTicketForUser(Ticket ticket);
 	
 
 }

@@ -20,17 +20,16 @@ public class BusReservationServiceImpl implements BusReservationService {
 
 	@Autowired
 	BusReservationDao busDao;
-	
+
 	@Autowired
 	EmailService emailservice;
-	
+
 	public User registerOrUpdateUser(User user) {
 		return busDao.registerOrUpdateUser(user);
 	}
 
-	
-	public Bus  addBus(Bus bus) {
-		return busDao. addBus(bus);
+	public Bus addBus(Bus bus) {
+		return busDao.addBus(bus);
 	}
 
 	public boolean loginUser(int userId, String password) {
@@ -124,8 +123,7 @@ public class BusReservationServiceImpl implements BusReservationService {
 		return busDao.loginAdmin(adminId, password);
 	}
 
-
-	//	@Override
+	// @Override
 //	public void sendEmail(User user) {
 //		if(!busDao.isCustomerPresent(user.getEmail())) {
 //			User user1 = null;
@@ -143,26 +141,6 @@ public class BusReservationServiceImpl implements BusReservationService {
 //		
 //	}
 
-	
-	
-	  @Override 
-	  public void sendEmail(User user) {
-	
-	  String subject
-	  ="Registration confirmation"; 
-	  
-	  String text = "Hi "+user.getFirstName()+"\n " +
-	  " You have been Successfully registered. \n"+"Your userId is "+user.getUserId()
-	  +".\n "+"Please use this to login";
-	  emailservice.sendEmailForNewRegistration(user.getEmail(),text,subject);
-	  System.out.println("Mail sent");
-	  
-	  
-	//  } else throw new CustomerServiceException("Customer already registered!");
-	  
-	  }
-
-
 	@Override
 	public List<Passenger> getPassenger(int ticketId) {
 		// TODO Auto-generated method stub
@@ -177,7 +155,7 @@ public class BusReservationServiceImpl implements BusReservationService {
 
 	@Override
 	public int updateBus(int busId, String source, String destination, double fare) {
-		
+
 		return busDao.updateBus(busId, source, destination, fare);
 	}
 
@@ -186,59 +164,63 @@ public class BusReservationServiceImpl implements BusReservationService {
 		return busDao.bookingsBasedOnPeriod(busId, travelDate);
 	}
 
+	@Override
+	public void sendEmailOnRegistration(User user) {
+		String subject = "Registration confirmation";
+
+		String text = "Hi " + user.getFirstName() + "\n " + " You have been Successfully registered. \n"
+				+ "Your userId is " + user.getUserId() + ".\n " + "Please use this to login";
+
+		emailservice.sendEmailForNewRegistration(user.getEmail(), text, subject);
+		System.out.println("Mail sent");
+
+	}
 
 	@Override
 	public boolean sendEmailOnBooking(Ticket ticket) {
-		
-		
-		  String subject
-		  ="Ticket confirmation"; 
-		  
-		  StringBuffer text = new StringBuffer();
-		  text.append("Hi "+ticket.getUser().getFirstName()+".\n "+
-		  "Your ticket has been successfully booked.\n"+
-		  "Your Ticket Id is "+ticket.getTicketId()
-		  +".\n "+
-		  "Source : "+ticket.getBus().getSource()+ " Destination : "+ticket.getBus().getDestination()+"\n"+
-		  "Departure Time : "+ticket.getBus().getTimeOfDeparture()+" Arrival Time : "+ticket.getBus().getTimeOfArrival()+"\n");
-		 
-		  for(int i=0;i<ticket.getNoOfPassengers();i++) {
-		   text.append("Passenger Name : "+ticket.getPassengers().get(i).getPassengerName()+ " Passenger SeatNo : "
-		  +ticket.getPassengers().get(i).getSeatNo()+ "\n");  
-		  }
-		  
-		  text.append("Total Amount : "+ticket.getTotalAmount());
-		  
-		  emailservice.sendEmailForBooking(ticket.getEmail(),text,subject);
-		  
-		  System.out.println("Mail sent");
-		  return true;
-		
+
+		String subject = "Ticket confirmation";
+
+		StringBuffer text = new StringBuffer();
+		text.append("Hi " + ticket.getUser().getFirstName() + ".\n " + "Your ticket has been successfully booked.\n"
+				+ "Your Ticket Id is " + ticket.getTicketId() + ".\n " + "Source : " + ticket.getBus().getSource()
+				+ " Destination : " + ticket.getBus().getDestination() + "\n" + "Departure Time : "
+				+ ticket.getBus().getTimeOfDeparture() + " Arrival Time : " + ticket.getBus().getTimeOfArrival()
+				+ "\n");
+
+		for (int i = 0; i < ticket.getNoOfPassengers(); i++) {
+			text.append("Passenger Name : " + ticket.getPassengers().get(i).getPassengerName() + " Passenger SeatNo : "
+					+ ticket.getPassengers().get(i).getSeatNo() + "\n");
+		}
+
+		text.append("Total Amount : " + ticket.getTotalAmount());
+
+		emailservice.sendEmailForBooking(ticket.getEmail(), text, subject);
+
+		System.out.println("Mail sent");
+		return true;
+
 	}
-
-
-	@Override
-
-	public boolean setTicketForUser(int ticketId, int userId) {
-		
-		return busDao.setTicketForUser(ticketId, userId);
-	}
-	
 
 	public User forgotPassword(int userId, String email) {
-		
-		return busDao.forgotPassword(userId, email);	
+
+		return busDao.forgotPassword(userId, email);
 	}
-	
+
 	@Override
 	public void sendEmailOnForgetPassword(User user) {
-		
-		String subject="Please click on the link given below to reset the password.";
-		
-		
-		String text="Your reset password link : "+"http://localhost:4200/forgotLink";
-		emailservice.sendEmailForForgetPassword(user.getEmail(),subject,text);
-		  System.out.println("Mail sent");
+
+		String subject = "Please click on the link given below to reset the password.";
+
+		String text = "Your reset password link : " + "http://localhost:4200/forgotLink";
+		emailservice.sendEmailForForgetPassword(user.getEmail(), subject, text);
+		System.out.println("Mail sent");
 
 	}
+
+	@Override
+	public Ticket setTicketForUser(Ticket ticket) {
+		return busDao.setTicketForUser(ticket);
+	}
+
 }

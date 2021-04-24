@@ -17,7 +17,6 @@ public class EmailService {
 		message.setSubject(subject);
 		message.setText(text);
 		mailSender.send(message);
-
 	}
 	
 	public void sendEmailForBooking(String email,StringBuffer text,String subject) {
@@ -37,6 +36,5 @@ public class EmailService {
 		message.setSubject(subject);
 		message.setText(text);
 		mailSender.send(message);
-
 	}
 }
