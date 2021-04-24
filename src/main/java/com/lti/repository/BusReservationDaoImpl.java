@@ -1,5 +1,8 @@
 package com.lti.repository;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lti.entity.Admin;
 import com.lti.entity.Bus;
+import com.lti.entity.LoginDto;
 import com.lti.entity.Passenger;
 import com.lti.entity.Status;
 import com.lti.entity.Ticket;
@@ -32,8 +36,36 @@ public class BusReservationDaoImpl implements BusReservationDao {
 
 	@Transactional
 	public User registerOrUpdateUser(User user) {
-		User userPersisted = em.merge(user);
-		return userPersisted;
+		
+		User u = null;
+		try {
+			
+		MessageDigest md=MessageDigest.getInstance("MD5");
+		md.reset();
+		
+		byte[] b = md.digest(user.getPassword().getBytes());
+		  
+        // Convert byte array into signum representation
+        BigInteger no = new BigInteger(1, b);
+
+        // Convert message digest into hex value
+        String hashtext = no.toString(16);
+        while (hashtext.length() < 32) {
+            hashtext = "0" + hashtext;
+        }
+        user.setPassword(hashtext);
+        u=em.merge(user);
+    } 
+
+    // For specifying wrong message digest algorithms
+    catch (NoSuchAlgorithmException e) {
+        throw new RuntimeException(e);
+    }
+		
+		return u;
+		
+		//User userPersisted = em.merge(user);
+		//return userPersisted;
 	}
 
 	@Transactional
@@ -43,51 +75,93 @@ public class BusReservationDaoImpl implements BusReservationDao {
 	}
 
 	public boolean loginUser(int userId, String password) {
-		String jpql = "select u from User u where u.userId=:id and u.password=:pass";
+		User user=em.find(User.class,userId);
+		System.out.println(user);
+		
 
-		TypedQuery<User> query = em.createQuery(jpql, User.class);
+		if(user!=null) {
+			try {
+				MessageDigest md=MessageDigest.getInstance("MD5");
+				md.reset();
+				md.update(password.getBytes());
+				
+				byte[] digest = md.digest();
+				  
+		        BigInteger bigInt = new BigInteger(1, digest);
 
-		query.setParameter("id", userId);
-		query.setParameter("pass", password);
-		User user = null;
-		try {
-			user = query.getSingleResult();
-
-		} catch (Exception e) {
-
+		        String hashtext = bigInt.toString(16);
+		        
+		        while (hashtext.length() < 32) {
+		            hashtext = "0" + hashtext;
+		        }
+		        
+		        if(user!=null && user.getPassword().equals(hashtext))
+		        	return true;
+			}
+		//}
+		catch (NoSuchAlgorithmException e) {
+		        e.printStackTrace();
+		    }
 		}
-		if (user == null) {
-			return false;
-		}
-		return true;
+		//}
+		return false;
+		
+		
+//		String jpql = "select u from User u where u.userId=:id and u.password=:pass";
+//
+//		TypedQuery<User> query = em.createQuery(jpql, User.class);
+//
+//		query.setParameter("id", userId);
+//		query.setParameter("pass", password);
+//		/*User*/ user = null;
+//		try {
+//			user = query.getSingleResult();
+//
+//		} catch (Exception e) {
+//
+//		}
+//		if (user == null) {
+//			return false;
+//		}
+//		return true;
 	}
 
-	/*
-	 * public Passenger addOrUpdatePassenger(Passenger passenger) {
-	 * 
-	 * tx.begin(); Passenger passengerPersisted = em.merge(passenger); tx.commit();
-	 * return passengerPersisted; }
-	 */
-
+	
 	@Transactional
 	public boolean changePassword(int userId, String password) {
-		String jpql = "select u from User u where u.userId=:uId";
-		TypedQuery<User> query = em.createQuery(jpql, User.class);
-		query.setParameter("uId", userId);
-		User user = null;
+		
+		User user=em.find(User.class,userId);
+		User u = null;
 		try {
-			user = query.getSingleResult();
-			user.setPassword(password);
+			
+		MessageDigest md=MessageDigest.getInstance("MD5");
+		md.reset();
+		
+		byte[] b = md.digest(password.getBytes());
+		  
+	    BigInteger no = new BigInteger(1, b);
 
-			em.merge(user);
+	    String hashtext = no.toString(16);
+	    while (hashtext.length() < 32) {
+	        hashtext = "0" + hashtext;
+	    }
+	    user.setPassword(hashtext);
+	    u=em.merge(user);
+	} 
 
-		} catch (Exception e) {
-		}
-		if (user == null) {
-			return false;
-		}
-		return true;
+	catch (NoSuchAlgorithmException e) {
+	    throw new RuntimeException(e);
 	}
+		
+		if(u!=null) {
+			return true;
+		}
+		else
+			return false;
+		
+	}
+
+		
 
 	@Transactional
 	public Ticket bookATicket(Ticket ticket) { // remaining
@@ -356,6 +430,7 @@ public class BusReservationDaoImpl implements BusReservationDao {
 		return tickets;
 	}
 
+	@Transactional
 	public User forgotPassword(int userId, String email) {
 		String jpql = "select u from User u where u.userId=:id and u.email=:Email";
 
